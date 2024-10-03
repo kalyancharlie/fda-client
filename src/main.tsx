@@ -1,16 +1,16 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
-import 'antd/dist/reset.css';
-import './index.css';
-import { ApolloProvider } from '@apollo/client';
-import client from './gql/index.ts';
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { ApolloProvider } from "@apollo/client";
+import "antd/dist/reset.css";
 
-createRoot(document.getElementById('root')!).render(
+import "./index.css";
+import client from "./gql/index.ts";
+import App from "./App.tsx";
+
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ApolloProvider client={client}>
-    <App />
+      <App />
     </ApolloProvider>
-  </StrictMode>,
-)
+  </StrictMode>
+);

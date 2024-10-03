@@ -1,8 +1,7 @@
-// src/apolloClient.ts
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 const client = new ApolloClient({
-  uri: 'https://unfbwvef3a.execute-api.ap-south-1.amazonaws.com/dev/graphql', // Replace with your GraphQL endpoint
+  uri: import.meta.env.VITE_API_URL,
   cache: new InMemoryCache(),
 });
 
