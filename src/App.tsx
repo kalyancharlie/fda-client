@@ -3,6 +3,7 @@
 // import viteLogo from '/vite.svg'
 import './App.css'
 import { Button, DatePicker, message } from 'antd';
+import Login from './components/login';
 
 const App: React.FC = () => {
   const handleClick = () => {
@@ -17,6 +18,8 @@ const App: React.FC = () => {
       </Button>
       <br />
       <DatePicker style={{ marginTop: '10px' }} />
+      <br/>
+      <Login />
     </div>
   );
 };
