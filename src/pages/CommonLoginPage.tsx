@@ -38,6 +38,7 @@ const CommonLoginPage: React.FC = () => {
       if (data?.user_login) {
         const { user } = data.user_login;
         // Set Auth Token
+        console.log(user)
         if (user.role === "VENDOR") {
           message.success("Login Success");
           navigate("/vendor/home", { replace: true });
