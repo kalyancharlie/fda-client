@@ -17,10 +17,7 @@ const router = createBrowserRouter([
         path: "login",
         element: <CommonLoginPage />,
       },
-      // Vendor Routes
       ...vendorRouter,
-
-      // Admin Routes,
       ...adminRouter,
     ],
   },
