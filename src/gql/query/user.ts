@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { User } from "../../interfaces/User.interface";
+import { IUser } from "../../interfaces/User.interface";
 
 // export const LOGIN_USER = gql`
 //   mutation LoginUser($mobile: String!) {
@@ -20,7 +20,7 @@ export interface UserLoginResponse {
     statusCode: number;
     message: string;
     token: string;
-    user: User;
+    user: IUser;
   };
 }
 
