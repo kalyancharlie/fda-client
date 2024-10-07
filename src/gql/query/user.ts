@@ -1,4 +1,5 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
+import { IUser } from "../../interfaces/User.interface";
 
 // export const LOGIN_USER = gql`
 //   mutation LoginUser($mobile: String!) {
@@ -14,22 +15,31 @@ import { gql } from '@apollo/client';
 //   }
 // `;
 
+export interface UserLoginResponse {
+  user_login: {
+    statusCode: number;
+    message: string;
+    token: string;
+    user: IUser;
+  };
+}
+
 export const LOGIN_USER = gql`
-query UserLogin($login_id: String, $otp: String) {
-  user_login(login_id: $login_id, otp: $otp) {
-    statusCode
-    message
-    token
-    user {
-      account_status
-      address
-      email
-      id
-      name
-      order_history
-      phone
-      role
+  query UserLogin($login_id: String, $otp: String) {
+    user_login(login_id: $login_id, otp: $otp) {
+      statusCode
+      message
+      token
+      user {
+        account_status
+        address
+        email
+        id
+        name
+        order_history
+        phone
+        role
+      }
     }
   }
-}
-`
+`;
