@@ -1,10 +1,10 @@
-export interface User {
-  account_status: string;
-  address: string;
-  email: string;
+export interface IUser {
   id: string;
-  name: string;
-  order_history: string[];
+  email: string;
   phone: string;
+  name: string;
+  address: string;
+  order_history: string[];
   role: "VENDOR" | "ADMIN";
+  account_status: string;
 }

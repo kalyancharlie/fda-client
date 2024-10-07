@@ -2,6 +2,7 @@ import { Navigate, RouteObject } from "react-router-dom";
 
 import AdminLayout from "../components/layouts/AdminLayout";
 import AdminHomePage from "../pages/Admin/AdminHomePage";
+import ProtectedRoute from "../components/ProctectedRoute";
 
 const router: RouteObject[] = [
   {
@@ -14,7 +15,11 @@ const router: RouteObject[] = [
       },
       {
         path: "home",
-        element: <AdminHomePage />,
+        element: (
+          <ProtectedRoute role="ADMIN">
+            <AdminHomePage />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

@@ -2,6 +2,7 @@ import { Navigate, RouteObject } from "react-router-dom";
 
 import VendorLayout from "../components/layouts/VendorLayout";
 import VendorHomePage from "../pages/Vendor/VendorHomePage";
+import ProtectedRoute from "../components/ProctectedRoute";
 
 const router: RouteObject[] = [
   {
@@ -14,7 +15,11 @@ const router: RouteObject[] = [
       },
       {
         path: "home",
-        element: <VendorHomePage />,
+        element: (
+          <ProtectedRoute role="VENDOR">
+            <VendorHomePage />
+          </ProtectedRoute>
+        ),
       },
     ],
   },
