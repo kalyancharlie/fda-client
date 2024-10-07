@@ -4,13 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { message } from "antd";
 
-import {
-  updateAdminAuthState,
-  updateVendorAuthState,
-} from "../features/authSlice";
+import { updateAuthState } from "../features/authSlice";
 import { LOGIN_USER, UserLoginResponse } from "../gql/query/user";
 import { IApiFormState } from "../interfaces/Common.interface";
 import { ILoginFormState } from "../components/LoginForm";
+import { setAuth } from "../utils/auth-utils";
 
 export const useLogin = () => {
   const navigate = useNavigate();
@@ -40,14 +38,15 @@ export const useLogin = () => {
           name: user.name,
           isAuthenticated: true,
           token,
+          role: user.role,
         };
+        dispatch(updateAuthState(authState));
+        setAuth(authState);
 
         if (user.role === "VENDOR") {
-          dispatch(updateVendorAuthState(authState));
           message.success("Login Success");
           navigate("/vendor/home", { replace: true, state: authState });
         } else if (user.role === "ADMIN") {
-          dispatch(updateAdminAuthState(authState));
           message.success("Login Success");
           navigate("/admin/home", { replace: true, state: authState });
         } else {

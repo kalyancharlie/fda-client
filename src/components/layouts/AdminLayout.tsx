@@ -2,12 +2,12 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 
-import { logoutAdmin, selectAdminAuth } from "../../features/authSlice";
+import { logout, selectAuth } from "../../features/authSlice";
 import Navbar from "../Navbar";
 
 const AdminLayout: React.FC = () => {
   const dispatch = useDispatch();
-  const adminAuth = useSelector(selectAdminAuth);
+  const adminAuth = useSelector(selectAuth);
   const { name } = adminAuth ?? {};
 
   return (
@@ -16,7 +16,7 @@ const AdminLayout: React.FC = () => {
         moduleName="Admin Panel"
         userName={name || "User"}
         onLogout={() => {
-          dispatch(logoutAdmin());
+          dispatch(logout());
         }}
       />
       <div style={{ padding: "1rem" }}>

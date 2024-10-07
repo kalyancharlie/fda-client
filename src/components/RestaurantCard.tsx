@@ -1,7 +1,8 @@
-// src/components/RestaurantCard/RestaurantCard.tsx
 import React from "react";
-import { Card, Button } from "antd";
 import { EditOutlined } from "@ant-design/icons";
+import { Avatar, Card } from "antd";
+const { Meta } = Card;
+
 import { IRestaurant } from "../interfaces/Restaurant.interface";
 
 interface RestaurantCardProps {
@@ -13,25 +14,38 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
   restaurant,
   onEdit,
 }) => {
+  const { id, image, name, description, rating, operating_hours } = restaurant;
+
   return (
     <Card
       hoverable
-      cover={<img alt={restaurant.name} src={restaurant.image} />}
+      style={{ width: 300 }}
+      cover={
+        <img
+          alt={`${name} Image`}
+          src={
+            "https://dev.konekbuhay.com/static/media/web-bento-gamification.10f12df0803ac948f652.png"
+          }
+        />
+      }
       actions={[
-        <Button
-          type="link"
-          icon={<EditOutlined />}
-          onClick={(e) => {
-            e.stopPropagation(); // Prevent the card click event from triggering
+        <EditOutlined
+          key="edit"
+          onClick={(event) => {
+            event.stopPropagation();
             onEdit(restaurant);
           }}
-        >
-          Edit
-        </Button>,
+        />,
       ]}
+      onClick={(event) => {
+        event.stopPropagation();
+      }}
     >
-      <Card.Meta title={restaurant.name} description={restaurant.description} />
-      <div>Rating: {restaurant.rating}</div>
+      <Meta
+        avatar={<Avatar src={image} />}
+        title={name}
+        description={description}
+      />
     </Card>
   );
 };

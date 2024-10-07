@@ -1,7 +1,7 @@
 import { Navigate, RouteObject } from "react-router-dom";
 
 import VendorLayout from "../components/layouts/VendorLayout";
-import VendorHomePage from "../pages/Vendor/VendorHomePage";
+import VendorHomePage from "../pages/Vendor/VendorHomePage/VendorHomePage";
 import ProtectedRoute from "../components/ProctectedRoute";
 
 const router: RouteObject[] = [

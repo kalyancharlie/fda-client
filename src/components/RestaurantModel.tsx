@@ -1,6 +1,7 @@
 // src/components/RestaurantModal.tsx
 import React, { useEffect } from "react";
 import { Modal, Form, Input, InputNumber } from "antd";
+
 import { IRestaurant } from "../interfaces/Restaurant.interface";
 
 interface RestaurantModalProps {
@@ -32,7 +33,7 @@ const RestaurantModal: React.FC<RestaurantModalProps> = ({
   return (
     <Modal
       title={restaurant ? "Edit Restaurant" : "Add Restaurant"}
-      visible={visible}
+      open={visible}
       onOk={() => {
         form
           .validateFields()

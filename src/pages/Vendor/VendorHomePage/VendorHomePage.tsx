@@ -1,0 +1,139 @@
+import React, { useEffect, useState } from "react";
+import { Button, Spin, Typography } from "antd";
+const { Title } = Typography;
+import { message } from "antd";
+
+import RestaurantsList from "../../../components/RestaurantsList/RestaurantsList";
+import { IRestaurant } from "../../../interfaces/Restaurant.interface";
+import { useRestaurants } from "../../../hooks/useRestaurants";
+import { useSelector } from "react-redux";
+import { selectAuth } from "../../../features/authSlice";
+import RestaurantModal from "../../../components/RestaurantModel";
+import ApiErrorMessage from "../../../components/ApiErrorMessage";
+import "./VendorHomePage.css";
+
+export type UpdateRestaurantFuncType = (params: {
+  restaurantId: string;
+  updateProps: Partial<IRestaurant>;
+}) => void;
+
+const VendorHomePage: React.FC = () => {
+  const auth = useSelector(selectAuth);
+  const { userId } = auth ?? {};
+  const {
+    loading,
+    error,
+    restaurants,
+    getRestaurants,
+    updateRestaurant,
+    createRestaurant,
+  } = useRestaurants(userId as string);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] =
+    useState<IRestaurant | null>(null);
+
+  // Create Restaurant
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const displayCreateModal = () => {
+    setIsAddModalOpen(true);
+  };
+  const createRestaurantHandler = async (restaurant: IRestaurant) => {
+    try {
+      await createRestaurant({
+        variables: {
+          ...restaurant,
+        },
+      });
+      message.success("Create Success!");
+      getRestaurants();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      message.error("Failed to Create");
+    }
+  };
+  const onCreateCancel = () => {
+    setIsAddModalOpen(false);
+  };
+
+  // Update Restaurant
+  const updateRestaurantHandler = async (restaurant: IRestaurant) => {
+    try {
+      await updateRestaurant({
+        variables: {
+          ...restaurant,
+        },
+      });
+      message.success("Update Success!");
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      message.error("Failed to Update");
+    }
+  };
+
+  const displayUpdateModal = (restaurant: IRestaurant) => {
+    setIsUpdateModalOpen(restaurant);
+  };
+
+  const onUpdateCancel = () => {
+    setIsUpdateModalOpen(null);
+  };
+
+  useEffect(() => {
+    getRestaurants();
+  }, [getRestaurants]);
+
+  return (
+    <div>
+      <div className="text-button-wrapper">
+        <Title level={3}>Restaurants</Title>
+        <Button
+          type="primary"
+          className="right-button"
+          onClick={displayCreateModal}
+        >
+          Add Restaurant
+        </Button>
+      </div>
+      {error && (
+        <ApiErrorMessage
+          message={
+            error.cause?.message ||
+            error?.cause?.name ||
+            "Error in Fetching Restaurants"
+          }
+        />
+      )}
+      {loading && <Spin fullscreen />}
+      <RestaurantsList
+        restaurants={restaurants}
+        updateRestaurant={displayUpdateModal}
+      />
+
+      {/* Add Restaurant Modal */}
+      {isAddModalOpen && (
+        <RestaurantModal
+          visible
+          onSave={(newRestaurant) => {
+            createRestaurantHandler(newRestaurant);
+          }}
+          errorMessage=""
+          onCancel={onCreateCancel}
+        />
+      )}
+
+      {/* Update Restaurant Modal */}
+      {isUpdateModalOpen && (
+        <RestaurantModal
+          visible
+          onSave={(updatedRestaurant) => {
+            updateRestaurantHandler(updatedRestaurant);
+          }}
+          restaurant={isUpdateModalOpen}
+          errorMessage="NUll"
+          onCancel={onUpdateCancel}
+        />
+      )}
+    </div>
+  );
+};
+
+export default VendorHomePage;
