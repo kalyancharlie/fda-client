@@ -1,15 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { Row, Col, Button, message } from 'antd';
-import RestaurantCard from './RestaurantCard';
-import RestaurantModal from './RestaurantModel';
-import { Restaurant } from '../interfaces/Restaurant.interface';
-import { useRestaurants } from '../hooks/useRestaurants';
+import React, { useEffect, useState } from "react";
+import { Row, Col, Button, message } from "antd";
+import RestaurantCard from "./RestaurantCard";
+import RestaurantModal from "./RestaurantModel";
+import { IRestaurant } from "../interfaces/Restaurant.interface";
+import { useRestaurants } from "../hooks/useRestaurants";
 
 const VendorDashboard: React.FC = () => {
   const user_id = "28b99c4b-2984-44da-806b-fba73c2093b8";
-  const token = "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjI4Yjk5YzRiLTI5ODQtNDRkYS04MDZiLWZiYTczYzIwOTNiOCIsInJvbGUiOiJWRU5ET1IiLCJpYXQiOjE3MjgxNTQzODUsImV4cCI6MTcyODE1Nzk4NX0.Z_kul8clpCD0XbrV7IpwK7e6qUpmbKkbdZ_Cbcc9hDU"
-  const { loading, error, restaurants, getRestaurants, updateRestaurant, createRestaurant } = useRestaurants(user_id);
-  const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
+  const token =
+    "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjI4Yjk5YzRiLTI5ODQtNDRkYS04MDZiLWZiYTczYzIwOTNiOCIsInJvbGUiOiJWRU5ET1IiLCJpYXQiOjE3MjgxNTQzODUsImV4cCI6MTcyODE1Nzk4NX0.Z_kul8clpCD0XbrV7IpwK7e6qUpmbKkbdZ_Cbcc9hDU";
+  const {
+    loading,
+    error,
+    restaurants,
+    getRestaurants,
+    updateRestaurant,
+    createRestaurant,
+  } = useRestaurants(user_id);
+  const [selectedRestaurant, setSelectedRestaurant] =
+    useState<IRestaurant | null>(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalError, setModalError] = useState<string | null>(null); // To store error messages
 
@@ -18,14 +27,14 @@ const VendorDashboard: React.FC = () => {
       getRestaurants({
         context: {
           headers: {
-            Authorization: token ? `Bearer ${token}` : '',
+            Authorization: token ? `Bearer ${token}` : "",
           },
         },
       });
     }
   }, [user_id, getRestaurants]);
 
-  const handleEdit = (restaurant: Restaurant) => {
+  const handleEdit = (restaurant: IRestaurant) => {
     setSelectedRestaurant(restaurant);
     setModalVisible(true);
   };
@@ -35,7 +44,7 @@ const VendorDashboard: React.FC = () => {
     setModalVisible(true);
   };
 
-  const handleSave = async (restaurant: Restaurant) => {
+  const handleSave = async (restaurant: IRestaurant) => {
     setModalError(null); // Reset any previous errors
     try {
       if (selectedRestaurant) {
@@ -48,11 +57,11 @@ const VendorDashboard: React.FC = () => {
               name: restaurant.name,
               description: restaurant.description,
               address: restaurant.address,
-              rating: restaurant.rating
+              rating: restaurant.rating,
             },
           },
         });
-        message.success('Restaurant updated successfully!');
+        message.success("Restaurant updated successfully!");
       } else {
         // Add new restaurant
         await createRestaurant({
@@ -67,24 +76,26 @@ const VendorDashboard: React.FC = () => {
               cuisine_type: restaurant.cuisine_type,
               operating_hours: restaurant.operating_hours,
               contact_details: restaurant.contact_details,
-              commission_rate: 10
+              commission_rate: 10,
             },
           },
         });
-        message.success('Restaurant created successfully!');
+        message.success("Restaurant created successfully!");
       }
       setModalVisible(false); // Close the modal on success
     } catch (err: any) {
       // Handle errors and show the error message
-      setModalError(err.message || 'An error occurred while saving the restaurant');
-      message.error('Failed to save the restaurant!');
+      setModalError(
+        err.message || "An error occurred while saving the restaurant"
+      );
+      message.error("Failed to save the restaurant!");
     }
   };
 
   return (
     <div>
       <Row gutter={16}>
-        {restaurants.map((restaurant: Restaurant) => (
+        {restaurants.map((restaurant: IRestaurant) => (
           <Col span={6} key={restaurant.id}>
             <RestaurantCard restaurant={restaurant} onEdit={handleEdit} />
           </Col>
@@ -102,7 +113,7 @@ const VendorDashboard: React.FC = () => {
           restaurant={selectedRestaurant || undefined}
           onSave={handleSave}
           onCancel={() => setModalVisible(false)}
-          errorMessage={modalError || 'error'} // Pass the error message to the modal
+          errorMessage={modalError || "error"} // Pass the error message to the modal
         />
       )}
     </div>

@@ -4,8 +4,6 @@ const { Title } = Typography;
 
 import RestaurantsList from "../../components/RestaurantsList";
 import { IRestaurant } from "../../interfaces/Restaurant.interface";
-import VendorDashboard from "../../components/VendorDashBoard";
-import MenuDashboard from "../../components/MenuDashboard";
 
 export type UpdateRestaurantFuncType = (params: {
   restaurantId: string;
@@ -13,10 +11,7 @@ export type UpdateRestaurantFuncType = (params: {
 }) => void;
 
 const VendorHomePage: React.FC = () => {
-  const [restaurants, setRestaurants] = useState<IRestaurant[]>([
-    { name: "KFC", id: "1" },
-    { name: "Dominos", id: "2" },
-  ]);
+  const [restaurants, setRestaurants] = useState<IRestaurant[]>([]);
 
   const updateRestaurant: UpdateRestaurantFuncType = useCallback(
     ({
