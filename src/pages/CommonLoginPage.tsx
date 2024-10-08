@@ -9,8 +9,8 @@ import { useNavigate } from "react-router-dom";
 
 const CommonLoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const adminAuth = useSelector(selectAuth);
-  const { role } = adminAuth ?? {};
+  const auth = useSelector(selectAuth);
+  const { role } = auth ?? {};
   const { apiState, setApiState, verifyOtp } = useLogin();
 
   const [formState, setFormState] = useState<ILoginFormState>({
@@ -40,13 +40,13 @@ const CommonLoginPage: React.FC = () => {
 
   // Auto Login
   useEffect(() => {
-    if (!adminAuth) return;
+    if (!auth) return;
     if (role === "VENDOR") {
       navigate("/vendor/home", { replace: true });
     } else if (role === "ADMIN") {
       navigate("/admin/home", { replace: true });
     }
-  }, [role, adminAuth, navigate]);
+  }, [role, auth, navigate]);
 
   return (
     <div>

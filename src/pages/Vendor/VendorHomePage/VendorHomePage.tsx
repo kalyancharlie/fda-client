@@ -31,6 +31,7 @@ const VendorHomePage: React.FC = () => {
   const [isUpdateModalOpen, setIsUpdateModalOpen] =
     useState<IRestaurant | null>(null);
 
+  const [apiErrorMsg, setApiErrorMsg] = useState<string>("");
   // Create Restaurant
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const displayCreateModal = () => {
@@ -38,33 +39,68 @@ const VendorHomePage: React.FC = () => {
   };
   const createRestaurantHandler = async (restaurant: IRestaurant) => {
     try {
-      await createRestaurant({
+      const {
+        name,
+        description,
+        address,
+        rating,
+        menu,
+        cuisine_type,
+        operating_hours,
+        contact_details,
+      } = restaurant;
+      const res = await createRestaurant({
         variables: {
-          ...restaurant,
+          restaurants: {
+            user_id: userId,
+            name,
+            description,
+            address,
+            rating,
+            menu,
+            cuisine_type,
+            operating_hours,
+            contact_details,
+            commission_rate: 10,
+          },
         },
       });
-      message.success("Create Success!");
+      message.success("Restaurant Created Successfully!");
+      setIsAddModalOpen(false);
       getRestaurants();
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
+      setApiErrorMsg("Failed");
       message.error("Failed to Create");
     }
   };
   const onCreateCancel = () => {
+    setApiErrorMsg("");
     setIsAddModalOpen(false);
   };
 
   // Update Restaurant
   const updateRestaurantHandler = async (restaurant: IRestaurant) => {
     try {
-      await updateRestaurant({
+      const { id, user_id, name, description, address, rating } = restaurant;
+      const res = await updateRestaurant({
         variables: {
-          ...restaurant,
+          restaurant: {
+            id,
+            user_id,
+            name,
+            description,
+            address,
+            rating,
+          },
         },
       });
-      message.success("Update Success!");
+      console.log(res);
+      message.success("Restaurant Update Success!");
+      setIsUpdateModalOpen(null);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
+      setApiErrorMsg("Failed");
       message.error("Failed to Update");
     }
   };
@@ -74,6 +110,7 @@ const VendorHomePage: React.FC = () => {
   };
 
   const onUpdateCancel = () => {
+    setApiErrorMsg("");
     setIsUpdateModalOpen(null);
   };
 
@@ -115,7 +152,7 @@ const VendorHomePage: React.FC = () => {
           onSave={(newRestaurant) => {
             createRestaurantHandler(newRestaurant);
           }}
-          errorMessage=""
+          errorMessage={apiErrorMsg}
           onCancel={onCreateCancel}
         />
       )}
@@ -128,7 +165,7 @@ const VendorHomePage: React.FC = () => {
             updateRestaurantHandler(updatedRestaurant);
           }}
           restaurant={isUpdateModalOpen}
-          errorMessage="NUll"
+          errorMessage={apiErrorMsg}
           onCancel={onUpdateCancel}
         />
       )}
