@@ -11,3 +11,7 @@ export interface IAuth {
 export interface IAuthWithRole extends IAuth {
   role: IUser["role"] | null;
 }
+
+export interface JwtPayload {
+  exp: number;
+}

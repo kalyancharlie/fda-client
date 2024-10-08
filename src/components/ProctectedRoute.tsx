@@ -10,11 +10,12 @@ const ProtectedRoute: React.FC<{
   role: IUser["role"];
 }> = ({ children, role }) => {
   const authState = useSelector((state: RootState) => {
-    return role === "VENDOR"
-      ? state.auth.auth
-      : role === "ADMIN"
-      ? state.auth.auth
-      : { isAuthenticated: false };
+    const auth = state.auth.auth;
+    const { role: userRole, isAuthenticated } = auth ?? {};
+    if (userRole === role) {
+      return { isAuthenticated };
+    }
+    return { isAuthenticated: false };
   });
 
   if (!authState?.isAuthenticated) {

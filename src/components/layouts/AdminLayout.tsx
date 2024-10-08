@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 
 import { logout, selectAuth } from "../../features/authSlice";
 import Navbar from "../Navbar";
+import TokenExpirationWatcher from "../TokenExpiryWatcher";
 
 const AdminLayout: React.FC = () => {
   const dispatch = useDispatch();
@@ -12,6 +13,7 @@ const AdminLayout: React.FC = () => {
 
   return (
     <div>
+      <TokenExpirationWatcher />
       <Navbar
         moduleName="Admin Panel"
         userName={name || "User"}

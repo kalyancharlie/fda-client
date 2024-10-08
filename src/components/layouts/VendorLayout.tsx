@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 
 import { logout, selectAuth } from "../../features/authSlice";
 import Navbar from "../Navbar";
+import TokenExpirationWatcher from "../TokenExpiryWatcher";
 
 const VendorLayout: React.FC = () => {
   const dispatch = useDispatch();
@@ -12,6 +13,7 @@ const VendorLayout: React.FC = () => {
 
   return (
     <div>
+      <TokenExpirationWatcher />
       <Navbar
         moduleName="Vendor Panel"
         userName={name || "User"}

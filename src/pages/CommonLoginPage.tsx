@@ -3,8 +3,14 @@ import React, { useEffect, useState } from "react";
 import LoginForm, { ILoginFormState } from "../components/LoginForm";
 import { UserLoginResponse } from "../gql/query/user";
 import { useLogin } from "../hooks/useLogin";
+import { selectAuth } from "../features/authSlice";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const CommonLoginPage: React.FC = () => {
+  const navigate = useNavigate();
+  const adminAuth = useSelector(selectAuth);
+  const { role } = adminAuth ?? {};
   const { apiState, setApiState, verifyOtp } = useLogin();
 
   const [formState, setFormState] = useState<ILoginFormState>({
@@ -31,6 +37,16 @@ const CommonLoginPage: React.FC = () => {
   useEffect(() => {
     setApiState((prev) => ({ ...prev, error: undefined }));
   }, [formState, setApiState]);
+
+  // Auto Login
+  useEffect(() => {
+    if (!adminAuth) return;
+    if (role === "VENDOR") {
+      navigate("/vendor/home", { replace: true });
+    } else if (role === "ADMIN") {
+      navigate("/admin/home", { replace: true });
+    }
+  }, [role, adminAuth, navigate]);
 
   return (
     <div>

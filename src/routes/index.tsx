@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import RootLayout from "../components/layouts/RootLayout";
 import ErrorPage from "../pages/common/ErrorPage";
@@ -13,6 +13,10 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [
+      {
+        path: "/",
+        element: <Navigate to="/login" replace />,
+      },
       {
         path: "login",
         element: <CommonLoginPage />,
