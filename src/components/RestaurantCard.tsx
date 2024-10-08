@@ -8,13 +8,15 @@ import { IRestaurant } from "../interfaces/Restaurant.interface";
 interface RestaurantCardProps {
   restaurant: IRestaurant;
   onEdit: (restaurant: IRestaurant) => void;
+  onClick: (restaurant: IRestaurant) => void;
 }
 
 const RestaurantCard: React.FC<RestaurantCardProps> = ({
   restaurant,
   onEdit,
+  onClick,
 }) => {
-  const { id, image, name, description, rating, operating_hours } = restaurant;
+  const { id, image, name, description } = restaurant;
 
   return (
     <Card
@@ -39,6 +41,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
       ]}
       onClick={(event) => {
         event.stopPropagation();
+        onClick(restaurant);
       }}
     >
       <Meta

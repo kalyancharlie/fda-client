@@ -21,7 +21,7 @@ const VendorLayout: React.FC = () => {
           dispatch(logout());
         }}
       />
-      <div style={{ padding: "1rem" }}>
+      <div>
         <Outlet />
       </div>
     </div>

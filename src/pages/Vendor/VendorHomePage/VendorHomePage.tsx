@@ -11,6 +11,7 @@ import { selectAuth } from "../../../features/authSlice";
 import RestaurantModal from "../../../components/RestaurantModel";
 import ApiErrorMessage from "../../../components/ApiErrorMessage";
 import "./VendorHomePage.css";
+import { Outlet } from "react-router-dom";
 
 export type UpdateRestaurantFuncType = (params: {
   restaurantId: string;
@@ -119,7 +120,8 @@ const VendorHomePage: React.FC = () => {
   }, [getRestaurants]);
 
   return (
-    <div>
+    <div className="vendor-home-page-wrapper">
+      <Outlet />
       <div className="text-button-wrapper">
         <Title level={3}>Restaurants</Title>
         <Button
@@ -140,10 +142,13 @@ const VendorHomePage: React.FC = () => {
         />
       )}
       {loading && <Spin fullscreen />}
+
+      {/* Restaurants List */}
       <RestaurantsList
         restaurants={restaurants}
         updateRestaurant={displayUpdateModal}
       />
+      {restaurants?.length === 0 && "Restaurants are not added"}
 
       {/* Add Restaurant Modal */}
       {isAddModalOpen && (

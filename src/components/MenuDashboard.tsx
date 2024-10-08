@@ -1,17 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Button, notification } from "antd";
+import { Row, Col, Button, notification, Spin } from "antd";
+import { useSelector } from "react-redux";
+
 import MenuCard from "./MenuCard";
 import MenuModal from "./MenuModal";
-import { useMenus } from "../hooks/useMenu";
+import { useMenu } from "../hooks/useMenu";
 import { MenuItem } from "../interfaces/Menu.interface";
 import { removeUndefinedFields } from "../utils";
+import { selectAuth } from "../features/authSlice";
 
-const MenuDashboard: React.FC = () => {
-  const restaurant_id = "ee158e5c-1304-40c9-91c8-63b789863598";
-  const token =
-    "eyJhbGciOiJIUzI1NiJ9.eyJpZCI6IjI4Yjk5YzRiLTI5ODQtNDRkYS04MDZiLWZiYTczYzIwOTNiOCIsInJvbGUiOiJWRU5ET1IiLCJpYXQiOjE3MjgxNTQzODUsImV4cCI6MTcyODE1Nzk4NX0.Z_kul8clpCD0XbrV7IpwK7e6qUpmbKkbdZ_Cbcc9hDU";
-  const { loading, error, menus, getMenus, updateMenu, createMenu } =
-    useMenus(restaurant_id);
+export interface IMenuDashboardProps {
+  restaurantId: string;
+  onCreate: () => void;
+  onEdit: () => void;
+}
+const MenuDashboard: React.FC<IMenuDashboardProps> = ({
+  restaurantId,
+  onEdit,
+  onCreate,
+}) => {
+  const auth = useSelector(selectAuth);
+  const { token } = auth ?? {};
+
+  const { loading, menus, getMenus, updateMenu, createMenu } =
+    useMenu(restaurantId);
   const [selectedMenu, setSelectedMenu] = useState<MenuItem | null>(null);
   const [isModalVisible, setModalVisible] = useState(false);
 
@@ -26,7 +38,7 @@ const MenuDashboard: React.FC = () => {
   };
 
   useEffect(() => {
-    if (restaurant_id) {
+    if (restaurantId) {
       getMenus({
         context: {
           headers: {
@@ -35,7 +47,7 @@ const MenuDashboard: React.FC = () => {
         },
       });
     }
-  }, [restaurant_id, getMenus]);
+  }, [restaurantId, getMenus, token]);
 
   const handleSave = async (menu: MenuItem) => {
     try {
@@ -57,14 +69,16 @@ const MenuDashboard: React.FC = () => {
         result = await updateMenu({
           variables: { menu_item: filteredMenuItem },
         });
+        onEdit();
       } else {
         const newMenuData = {
           ...menu,
-          restaurant_id,
+          restaurant_id: restaurantId,
           restaurant_name: "new restaurant",
         };
         console.log(newMenuData);
         result = await createMenu({ variables: { menu_items: newMenuData } });
+        onCreate();
       }
 
       // Show success notification
@@ -91,17 +105,22 @@ const MenuDashboard: React.FC = () => {
 
   return (
     <div>
+      <div className="text-button-wrapper">
+        <h3>Menu Items:</h3>
+        <Button type="primary" className="right-button" onClick={handleAddNew}>
+          Add Menu Item
+        </Button>
+      </div>
+
+      {loading && <Spin fullscreen />}
+
       <Row gutter={16}>
         {menus.map((menu: MenuItem) => (
           <Col span={6} key={menu.id}>
             <MenuCard menu={menu} onEdit={handleEdit} />
           </Col>
         ))}
-        <Col span={6}>
-          <Button type="dashed" onClick={handleAddNew}>
-            Add Menu Item
-          </Button>
-        </Col>
+        {menus?.length === 0 && "No Menu Item is added."}
       </Row>
 
       {isModalVisible && (

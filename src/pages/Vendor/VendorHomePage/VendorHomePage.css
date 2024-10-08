@@ -1,10 +1,13 @@
+.vendor-home-page-wrapper {
+  padding: 1rem;
+}
+
 .text-button-wrapper {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 10px; /* Adds some spacing between items when wrapping */
   width: 100%; /* Ensures full width */
-  padding: 20px; /* Optional: Adds padding to the container */
 }
 
 .right-button {

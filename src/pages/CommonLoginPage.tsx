@@ -6,6 +6,7 @@ import { useLogin } from "../hooks/useLogin";
 import { selectAuth } from "../features/authSlice";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { ROUTE_VENDOR_HOME } from "../routes/VendorRoutes";
 
 const CommonLoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ const CommonLoginPage: React.FC = () => {
   useEffect(() => {
     if (!auth) return;
     if (role === "VENDOR") {
-      navigate("/vendor/home", { replace: true });
+      navigate(ROUTE_VENDOR_HOME, { replace: true });
     } else if (role === "ADMIN") {
       navigate("/admin/home", { replace: true });
     }

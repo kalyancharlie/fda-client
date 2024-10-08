@@ -1,7 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import { IRestaurant } from "../../interfaces/Restaurant.interface";
 import RestaurantCard from "../RestaurantCard";
+import { getVendorRestaurantPageRoute } from "../../routes/VendorRoutes";
 import "./RestaurantsList.css";
 
 export interface IRestaurantsListProps {
@@ -12,6 +14,13 @@ const RestaurantsList: React.FC<IRestaurantsListProps> = ({
   restaurants,
   updateRestaurant,
 }) => {
+  const navigate = useNavigate();
+  const navigateToRestaurantPage = (restaurant: IRestaurant) => {
+    navigate(getVendorRestaurantPageRoute(restaurant.id), {
+      state: restaurant,
+    });
+  };
+
   return (
     <div className="card-container">
       {restaurants.map((restaurant, ind) => {
@@ -23,6 +32,7 @@ const RestaurantsList: React.FC<IRestaurantsListProps> = ({
               onEdit={(rest) => {
                 updateRestaurant(rest);
               }}
+              onClick={navigateToRestaurantPage}
             />
           </div>
         );

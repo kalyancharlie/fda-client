@@ -9,6 +9,7 @@ import { LOGIN_USER, UserLoginResponse } from "../gql/query/user";
 import { IApiFormState } from "../interfaces/Common.interface";
 import { ILoginFormState } from "../components/LoginForm";
 import { setAuth } from "../utils/auth-utils";
+import { ROUTE_VENDOR_HOME } from "../routes/VendorRoutes";
 
 export const useLogin = () => {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ export const useLogin = () => {
 
         if (user.role === "VENDOR") {
           message.success("Login Success");
-          navigate("/vendor/home", { replace: true, state: authState });
+          navigate(ROUTE_VENDOR_HOME, { replace: true, state: authState });
         } else if (user.role === "ADMIN") {
           message.success("Login Success");
           navigate("/admin/home", { replace: true, state: authState });
