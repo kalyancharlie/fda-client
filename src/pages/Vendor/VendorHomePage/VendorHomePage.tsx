@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Spin, Typography } from "antd";
+import { Outlet } from "react-router-dom";
 const { Title } = Typography;
 import { message } from "antd";
 
@@ -8,10 +9,9 @@ import { IRestaurant } from "../../../interfaces/Restaurant.interface";
 import { useRestaurants } from "../../../hooks/useRestaurants";
 import { useSelector } from "react-redux";
 import { selectAuth } from "../../../features/authSlice";
-import RestaurantModal from "../../../components/RestaurantModel";
+import RestaurantModal from "../../../components/RestaurantModal/RestaurantModel";
 import ApiErrorMessage from "../../../components/ApiErrorMessage";
 import "./VendorHomePage.css";
-import { Outlet } from "react-router-dom";
 
 export type UpdateRestaurantFuncType = (params: {
   restaurantId: string;
@@ -155,7 +155,7 @@ const VendorHomePage: React.FC = () => {
         <RestaurantModal
           visible
           onSave={(newRestaurant) => {
-            createRestaurantHandler(newRestaurant);
+            return createRestaurantHandler(newRestaurant);
           }}
           errorMessage={apiErrorMsg}
           onCancel={onCreateCancel}
@@ -167,7 +167,7 @@ const VendorHomePage: React.FC = () => {
         <RestaurantModal
           visible
           onSave={(updatedRestaurant) => {
-            updateRestaurantHandler(updatedRestaurant);
+            return updateRestaurantHandler(updatedRestaurant);
           }}
           restaurant={isUpdateModalOpen}
           errorMessage={apiErrorMsg}

@@ -68,7 +68,6 @@ const VendorNavbar: React.FC<INavbarProps> = ({
       default:
         setCurrent(location.pathname);
     }
-    console.log(location.pathname);
   }, [location]);
 
   return (
