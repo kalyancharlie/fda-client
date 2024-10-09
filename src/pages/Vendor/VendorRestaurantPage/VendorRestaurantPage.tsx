@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { Button, Image, Typography } from "antd";
 
-import { ROUTE_RESTAURANT_ID_PARAM } from "../../../routes/VendorRoutes";
 import { IRestaurant } from "../../../interfaces/Restaurant.interface";
 import { REST_DUMMY_IMG_URL } from "../../../constants/assets";
-import "./VendorRestaurantPage.css";
 import { useMenu } from "../../../hooks/useMenu";
 import MenuDashboard from "../../../components/MenuDashboard";
+import { ROUTE_RESTAURANT_ID_PARAM } from "../../../routes/route-constants";
+import "./VendorRestaurantPage.css";
 
 interface IRestaurantParams {
   [ROUTE_RESTAURANT_ID_PARAM]: string;

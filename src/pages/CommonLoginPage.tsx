@@ -6,7 +6,7 @@ import { useLogin } from "../hooks/useLogin";
 import { selectAuth } from "../features/authSlice";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ROUTE_VENDOR_HOME } from "../routes/VendorRoutes";
+import { ROUTE_VENDOR_HOME } from "../routes/route-constants";
 
 const CommonLoginPage: React.FC = () => {
   const navigate = useNavigate();

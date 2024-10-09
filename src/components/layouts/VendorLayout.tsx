@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 
 import { logout, selectAuth } from "../../features/authSlice";
-import Navbar from "../Navbar";
 import TokenExpirationWatcher from "../TokenExpiryWatcher";
+import VendorNavbar from "../vendor/VendorNavbar";
 
 const VendorLayout: React.FC = () => {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ const VendorLayout: React.FC = () => {
   return (
     <div>
       <TokenExpirationWatcher />
-      <Navbar
+      <VendorNavbar
         moduleName="Vendor Panel"
         userName={name || "User"}
         onLogout={() => {

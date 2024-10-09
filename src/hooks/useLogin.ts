@@ -9,7 +9,7 @@ import { LOGIN_USER, UserLoginResponse } from "../gql/query/user";
 import { IApiFormState } from "../interfaces/Common.interface";
 import { ILoginFormState } from "../components/LoginForm";
 import { setAuth } from "../utils/auth-utils";
-import { ROUTE_VENDOR_HOME } from "../routes/VendorRoutes";
+import { ROUTE_VENDOR_HOME } from "../routes/route-constants";
 
 export const useLogin = () => {
   const navigate = useNavigate();

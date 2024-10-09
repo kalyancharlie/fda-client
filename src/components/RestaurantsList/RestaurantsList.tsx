@@ -2,8 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import { IRestaurant } from "../../interfaces/Restaurant.interface";
-import RestaurantCard from "../RestaurantCard";
-import { getVendorRestaurantPageRoute } from "../../routes/VendorRoutes";
+import RestaurantCard from "../RestaurantCard/RestaurantCard";
+import { getVendorRestaurantPageRoute } from "../../routes/route-constants";
 import "./RestaurantsList.css";
 
 export interface IRestaurantsListProps {

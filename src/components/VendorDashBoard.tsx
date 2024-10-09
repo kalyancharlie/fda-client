@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Button, message } from "antd";
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard from "./RestaurantCard/RestaurantCard";
 import RestaurantModal from "./RestaurantModel";
 import { IRestaurant } from "../interfaces/Restaurant.interface";
 import { useRestaurants } from "../hooks/useRestaurants";

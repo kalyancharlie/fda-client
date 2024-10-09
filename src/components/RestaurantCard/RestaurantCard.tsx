@@ -1,9 +1,11 @@
 import React from "react";
 import { EditOutlined } from "@ant-design/icons";
-import { Avatar, Card } from "antd";
+import { Avatar, Button, Card, Rate } from "antd";
 const { Meta } = Card;
 
-import { IRestaurant } from "../interfaces/Restaurant.interface";
+import { IRestaurant } from "../../interfaces/Restaurant.interface";
+import "./RestaurantCard.css";
+import { DUMMY_IMG_URL } from "../../constants/assets";
 
 interface RestaurantCardProps {
   restaurant: IRestaurant;
@@ -16,12 +18,12 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
   onEdit,
   onClick,
 }) => {
-  const { id, image, name, description } = restaurant;
+  const { id, image, name, description, rating } = restaurant;
 
   return (
     <Card
       hoverable
-      style={{ width: 300 }}
+      style={{ width: 250 }}
       cover={
         <img
           alt={`${name} Image`}
@@ -47,7 +49,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
       <Meta
         avatar={<Avatar src={image} />}
         title={name}
-        description={description}
+        // description={description}
       />
     </Card>
   );
