@@ -148,7 +148,6 @@ const VendorHomePage: React.FC = () => {
         restaurants={restaurants}
         updateRestaurant={displayUpdateModal}
       />
-      {restaurants?.length === 0 && "Restaurants are not added"}
 
       {/* Add Restaurant Modal */}
       {isAddModalOpen && (
