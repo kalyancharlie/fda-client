@@ -37,13 +37,7 @@ const RestaurantList: React.FC<IRestaurantsListProps> = ({
     "Rating",
     "Action",
   ]);
-  const [previewVisible, setPreviewVisible] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
 
-  const handlePreview = (src: string) => {
-    setPreviewImage(src);
-    setPreviewVisible(true);
-  };
 
   const [configVisible, setConfigVisible] = useState(false);
   const columnsOptions = ["Logo", "Name", "Image", "Rating", "Action"];
@@ -63,13 +57,6 @@ const RestaurantList: React.FC<IRestaurantsListProps> = ({
   // Table Columns Configuration
   const defaultColumns: ColumnsType<IRestaurant> = useMemo(
     () => [
-      {
-        title: "Logo",
-        dataIndex: "logo",
-        render: (text, record) => (
-          <Image width={50} src={""} preview={{ visible: false }} />
-        ),
-      },
       {
         title: "Name",
         dataIndex: "name",
@@ -112,7 +99,7 @@ const RestaurantList: React.FC<IRestaurantsListProps> = ({
         title: "Image",
         dataIndex: "image",
         render: (text, record) => (
-          <Button onClick={() => handlePreview(DUMMY_IMG_URL)}>Preview</Button>
+          <Image width={50}  src={record.image_url || DUMMY_IMG_URL}/>
         ),
       },
       {
@@ -173,16 +160,6 @@ const RestaurantList: React.FC<IRestaurantsListProps> = ({
         rowKey="id"
       />
 
-      {/* Modal for Preview */}
-      <Modal
-        open={previewVisible}
-        footer={null}
-        onCancel={() => setPreviewVisible(false)}
-      >
-        <Image src={previewImage} preview={false} />
-      </Modal>
-
-      {/* Modal for Column Configuration */}
       <Modal
         title="Configure Columns"
         open={configVisible}

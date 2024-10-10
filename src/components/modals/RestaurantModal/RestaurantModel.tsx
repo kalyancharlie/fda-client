@@ -87,6 +87,14 @@ const RestaurantModal: React.FC<RestaurantModalProps> = ({
         </Form.Item>
         <Form.Item
           className="input-wrapper"
+          name="image_url"
+          label="Image URL"
+          rules={[{ required: true, type: "url", message: "Please enter a valid URL" }]}
+        >
+          <Input placeholder="Enter image URL" />
+        </Form.Item>
+        <Form.Item
+          className="input-wrapper"
           name="operating_hours"
           label="Operating Hours"
           rules={[{ required: true }]}

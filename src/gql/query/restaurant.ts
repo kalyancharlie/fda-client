@@ -23,6 +23,7 @@ export const GET_RESTAURANTS_BY_USER_ID = gql`
         operating_hours
         total_earnings
         user_id
+        image_url
       }
     }
   }

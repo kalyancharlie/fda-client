@@ -27,12 +27,11 @@ const MenuModal: React.FC<MenuModalProps> = ({
       setIsLoading(true);
       // Find the category name based on the selected category_id
       const selectedCategory = categories.find(
-        (category) => category.id === values.category_id
+        (category) => category.id === values.category_id // Changed category_id to category
       );
       const categoryName = selectedCategory ? selectedCategory.name : "";
-
       // Include both category_id and category_name in the submitted values
-      onSave({ ...menu, ...values, category: categoryName }).finally(() =>
+      onSave({ ...menu, ...values, category: categoryName, category_id: values.category_id }).finally(() =>
         setIsLoading(false)
       );
     });
@@ -75,12 +74,21 @@ const MenuModal: React.FC<MenuModalProps> = ({
         </Form.Item>
         <Form.Item
           className="input-wrapper"
+          name="image_url"
+          label="Image URL"
+          rules={[{ required: true, type: "url", message: "Please enter a valid URL" }]}
+        >
+          <Input placeholder="Enter image URL" />
+        </Form.Item>
+        <Form.Item
+          className="input-wrapper"
           name="price"
           label="Price"
           rules={[{ required: true }]}
         >
           <InputNumber min={0} style={{ width: "100%" }} />
         </Form.Item>
+        
         <Form.Item
           className="input-wrapper"
           name="rating"
@@ -99,7 +107,7 @@ const MenuModal: React.FC<MenuModalProps> = ({
         </Form.Item>
         <Form.Item
           className="input-wrapper"
-          name="category_id"
+          name="category_id" // Changed from category to category_id
           label="Category"
           rules={[{ required: true }]}
         >

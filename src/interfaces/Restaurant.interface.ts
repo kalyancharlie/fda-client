@@ -2,7 +2,7 @@ export interface IRestaurant {
   id: string;
   name: string;
   rating: number;
-  image: string;
+  image_url: string;
   menu?: string[]; // Optional menu items as a list of strings (could be IDs or dish names)
   user_id?: string;
   commission_rate?: number;
