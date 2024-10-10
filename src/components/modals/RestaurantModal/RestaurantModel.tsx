@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, InputNumber } from "antd";
 import TextArea from "antd/es/input/TextArea";
 
-import { IRestaurant } from "../../interfaces/Restaurant.interface";
+import { IRestaurant } from "../../../interfaces/Restaurant.interface";
 import "./RestaurantModal.css";
 
 interface RestaurantModalProps {
@@ -23,6 +23,18 @@ const RestaurantModal: React.FC<RestaurantModalProps> = ({
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
 
+  const handleSumbit = () => {
+    form
+      .validateFields()
+      .then((values) => {
+        setIsLoading(true);
+        onSave({ ...restaurant, ...values }).finally(() => {
+          setIsLoading(false);
+        });
+      })
+      .catch((info) => console.log("Validation Failed:", info));
+  };
+
   // Set initial form values when restaurant data is passed or cleared
   useEffect(() => {
     if (restaurant) {
@@ -39,17 +51,7 @@ const RestaurantModal: React.FC<RestaurantModalProps> = ({
       centered={true}
       confirmLoading={isLoading}
       okText={restaurant ? "Save Changes" : "Add"}
-      onOk={() => {
-        form
-          .validateFields()
-          .then((values) => {
-            setIsLoading(true);
-            onSave({ ...restaurant, ...values }).finally(() => {
-              setIsLoading(false);
-            });
-          })
-          .catch((info) => console.log("Validation Failed:", info));
-      }}
+      onOk={handleSumbit}
       onCancel={onCancel}
     >
       <Form

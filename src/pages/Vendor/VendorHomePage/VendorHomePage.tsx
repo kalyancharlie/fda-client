@@ -8,7 +8,7 @@ import RestaurantsList from "../../../components/RestaurantsList/RestaurantsList
 import { IRestaurant } from "../../../interfaces/Restaurant.interface";
 import { useRestaurants } from "../../../hooks/useRestaurants";
 import { selectAuth } from "../../../features/authSlice";
-import RestaurantModal from "../../../components/RestaurantModal/RestaurantModel";
+import RestaurantModal from "../../../components/modals/RestaurantModal/RestaurantModel";
 import ApiErrorMessage from "../../../components/ApiErrorMessage";
 import "./VendorHomePage.css";
 

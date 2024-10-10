@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, notification, Spin, Select } from "antd";
 import { useSelector } from "react-redux";
 
-import MenuModal from "../MenuModal";
+import MenuModal from "../modals/MenuModal/MenuModal";
 import { useMenu } from "../../hooks/useMenu";
 import { MenuItem } from "../../interfaces/Menu.interface";
 import { removeUndefinedFields } from "../../utils";
