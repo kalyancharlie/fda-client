@@ -7,11 +7,41 @@ import { selectAuth } from "../features/authSlice";
 const auth = useSelector(selectAuth);
 const { token } = auth ?? {};
 
-export const useOrders = () => {
-    const [getOrdersByRestaurant, { refetch: getOrdersByRestaurantRefetch }]= useLazyQuery(GET_ORDERS_BY_RESTAURANT_ID);
-    const [updateOrderMutation] = useMutation(UPDATE_ORDER);
+export const useOrders = (restaurant_id: String, user_id: String) => {
+    const [getOrdersByRestaurant, { refetch: getOrdersByRestaurantRefetch }]= useLazyQuery(GET_ORDERS_BY_RESTAURANT_ID,
+        {
+            variables: { restaurant_id },
+            context: {
+              headers: {
+                Authorization: token ? `Bearer ${token}` : "",
+              },
+            },
+            fetchPolicy: "network-only", // Optional: Ensures that the latest data is fetched from the server
+          }
+    );
+    const [updateOrderMutation] = useMutation(UPDATE_ORDER, {
+        context: {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+        onCompleted: () => {
+          // Refetch the restaurant data after updating
+          getOrdersByUserRefetch();
+        },
+      });
 
-    const [getOrdersByUser, { loading, error, data, refetch: getOrdersByUserRefetch }]= useLazyQuery(GET_ORDERS_BY_USER_ID);
+    const [getOrdersByUser, { loading, error, data, refetch: getOrdersByUserRefetch }]= useLazyQuery(GET_ORDERS_BY_USER_ID,
+        {
+            variables: { user_id },
+            context: {
+              headers: {
+                Authorization: token ? `Bearer ${token}` : "",
+              },
+            },
+            fetchPolicy: "network-only", // Optional: Ensures that the latest data is fetched from the server
+          }
+    );
   
     const updateOrder = async (id: String, order_status:String) => {
       try {
