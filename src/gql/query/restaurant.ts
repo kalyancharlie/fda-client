@@ -2,10 +2,8 @@ import { IRestaurant } from "../../interfaces/Restaurant.interface";
 import { gql } from "@apollo/client";
 
 export interface GetRestaurantResponse {
-  get_restaurant: {
-    statusCode: string;
-    message: string;
-    restaurant: IRestaurant;
+  get_restaurant_by_user_id: {
+    restaurants: IRestaurant[];
   };
 }
 

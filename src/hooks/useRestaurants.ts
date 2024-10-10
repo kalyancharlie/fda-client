@@ -1,7 +1,10 @@
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { useSelector } from "react-redux";
 
-import { GET_RESTAURANTS_BY_USER_ID } from "../gql/query/restaurant";
+import {
+  GET_RESTAURANTS_BY_USER_ID,
+  GetRestaurantResponse,
+} from "../gql/query/restaurant";
 import {
   UPDATE_RESTAURANT,
   CREATE_RESTAURANTS,
@@ -12,9 +15,8 @@ export const useRestaurants = (user_id: string) => {
   const auth = useSelector(selectAuth);
   const { token } = auth ?? {};
 
-  const [getRestaurants, { data, loading, error, refetch }] = useLazyQuery(
-    GET_RESTAURANTS_BY_USER_ID,
-    {
+  const [getRestaurants, { data, loading, error, refetch }] =
+    useLazyQuery<GetRestaurantResponse>(GET_RESTAURANTS_BY_USER_ID, {
       context: {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -22,8 +24,7 @@ export const useRestaurants = (user_id: string) => {
       },
       variables: { user_id },
       fetchPolicy: "network-only", // Optional: Ensures that the latest data is fetched from the server
-    }
-  );
+    });
 
   const [updateRestaurant] = useMutation(UPDATE_RESTAURANT, {
     context: {

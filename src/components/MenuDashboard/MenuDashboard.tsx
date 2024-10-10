@@ -1,21 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Button, notification, Spin } from "antd";
+import { Button, notification, Spin, Select } from "antd";
 import { useSelector } from "react-redux";
 
-import MenuCard from "./MenuCard";
-import MenuModal from "./MenuModal";
-import { useMenu } from "../hooks/useMenu";
-import { MenuItem } from "../interfaces/Menu.interface";
-import { removeUndefinedFields } from "../utils";
-import { selectAuth } from "../features/authSlice";
+import MenuModal from "../MenuModal";
+import { useMenu } from "../../hooks/useMenu";
+import { MenuItem } from "../../interfaces/Menu.interface";
+import { removeUndefinedFields } from "../../utils";
+import { selectAuth } from "../../features/authSlice";
+import MenuItemList from "../MenuItemList/MenuItemList";
+import { IRestaurant } from "../../interfaces/Restaurant.interface";
+import "./MenuDashboard.css";
 
 export interface IMenuDashboardProps {
   restaurantId: string;
+  restaurants: IRestaurant[];
+  onRestaurantChange: (id: string) => void;
   onCreate: () => void;
   onEdit: () => void;
 }
 const MenuDashboard: React.FC<IMenuDashboardProps> = ({
   restaurantId,
+  restaurants,
+  onRestaurantChange,
   onEdit,
   onCreate,
 }) => {
@@ -104,9 +110,19 @@ const MenuDashboard: React.FC<IMenuDashboardProps> = ({
   };
 
   return (
-    <div>
-      <div className="text-button-wrapper">
-        <h3>Menu Items:</h3>
+    <div className="menu-dashboard-wrapper">
+      <div className="text-button-wrapper" style={{ marginBottom: "1rem" }}>
+        {/* Restaurants Select Menu */}
+        <Select
+          value={restaurantId || ""}
+          style={{ minWidth: 200 }}
+          onChange={onRestaurantChange}
+          options={restaurants.map((rest) => ({
+            value: rest.id,
+            label: rest.name,
+          }))}
+          loading={loading}
+        />
         <Button type="primary" className="right-button" onClick={handleAddNew}>
           Add Menu Item
         </Button>
@@ -114,14 +130,16 @@ const MenuDashboard: React.FC<IMenuDashboardProps> = ({
 
       {loading && <Spin fullscreen />}
 
-      <Row gutter={16}>
+      {/* <Row gutter={16}>
         {menus.map((menu: MenuItem) => (
           <Col span={6} key={menu.id}>
             <MenuCard menu={menu} onEdit={handleEdit} />
           </Col>
         ))}
         {menus?.length === 0 && "No Menu Item is added."}
-      </Row>
+      </Row> */}
+      {/* Menu Item List */}
+      <MenuItemList menuItems={menus} updateMenuItem={handleEdit} />
 
       {isModalVisible && (
         <MenuModal

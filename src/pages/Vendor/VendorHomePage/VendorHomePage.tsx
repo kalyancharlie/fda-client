@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Button, Spin, Typography } from "antd";
-import { Outlet } from "react-router-dom";
 const { Title } = Typography;
+import { useSelector } from "react-redux";
 import { message } from "antd";
 
 import RestaurantsList from "../../../components/RestaurantsList/RestaurantsList";
 import { IRestaurant } from "../../../interfaces/Restaurant.interface";
 import { useRestaurants } from "../../../hooks/useRestaurants";
-import { useSelector } from "react-redux";
 import { selectAuth } from "../../../features/authSlice";
 import RestaurantModal from "../../../components/RestaurantModal/RestaurantModel";
 import ApiErrorMessage from "../../../components/ApiErrorMessage";
@@ -50,7 +49,7 @@ const VendorHomePage: React.FC = () => {
         operating_hours,
         contact_details,
       } = restaurant;
-      const res = await createRestaurant({
+      await createRestaurant({
         variables: {
           restaurants: {
             user_id: userId,
@@ -84,7 +83,7 @@ const VendorHomePage: React.FC = () => {
   const updateRestaurantHandler = async (restaurant: IRestaurant) => {
     try {
       const { id, user_id, name, description, address, rating } = restaurant;
-      const res = await updateRestaurant({
+      await updateRestaurant({
         variables: {
           restaurant: {
             id,
@@ -96,7 +95,6 @@ const VendorHomePage: React.FC = () => {
           },
         },
       });
-      console.log(res);
       message.success("Restaurant Update Success!");
       setIsUpdateModalOpen(null);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -120,10 +118,9 @@ const VendorHomePage: React.FC = () => {
   }, [getRestaurants]);
 
   return (
-    <div className="vendor-home-page-wrapper">
-      <Outlet />
+    <div className="page-wrapper vendor-home-page-wrapper">
       <div className="text-button-wrapper">
-        <Title level={3}>Restaurants</Title>
+        <Title level={4}>Restaurants</Title>
         <Button
           type="primary"
           className="right-button"
