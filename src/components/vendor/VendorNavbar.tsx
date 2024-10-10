@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Layout, Menu, Typography, Row, Col } from "antd";
 import { LogoutOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate } from "react-router-dom";
-import { SettingOutlined, HomeOutlined } from "@ant-design/icons";
+import {
+  SettingOutlined,
+  HomeOutlined,
+  TruckOutlined,
+} from "@ant-design/icons";
 import type { MenuProps } from "antd";
 
 import {
@@ -21,7 +25,7 @@ const navMenu: MenuItem[] = [
   {
     label: "Orders",
     key: ROUTE_VENDOR_ORDERS_PAGE,
-    icon: <HomeOutlined />,
+    icon: <TruckOutlined />,
   },
   {
     label: "",

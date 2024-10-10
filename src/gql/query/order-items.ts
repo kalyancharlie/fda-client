@@ -11,9 +11,17 @@ export interface GetOrderItemsByRestaurantIdResponse {
 
 export const GET_ORDERS = gql`
   query MyQuery($restaurant_id: String) {
+    get_orders_by_restaurant_id: {
+      statusCode: number;
+      message: string;
+      orders: OrderItemResponse[];
+    };
+  }`;
+
+export const GET_ORDERS_BY_RESTAURANT_ID = gql`
+  query MyQuery($restaurant_id: String) {
     get_orders_by_restaurant_id(restaurant_id: $restaurant_id) {
       message
-      statusCode
       orders {
         admin_commission
         delivery_address
@@ -32,6 +40,27 @@ export const GET_ORDERS = gql`
         user_id
         vendor_earnings
       }
+      statusCode
+    }
+  }
+`;
+
+export const GET_ORDERS_BY_USER_ID = gql`
+  query MyQuery($user_id: String) {
+    get_orders_by_user_id(user_id: $user_id) {
+      orders {
+        admin_commission
+        delivery_address
+        id
+        order_completed_at
+        order_placed_at
+        order_status
+        total_amount
+        restaurant_id
+        user_id
+        vendor_earnings
+      }
+      message
     }
   }
 `;

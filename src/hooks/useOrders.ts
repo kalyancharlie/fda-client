@@ -3,17 +3,49 @@ import { useSelector } from "react-redux";
 
 import { UPDATE_ORDER } from "../gql/mutations/order-items";
 import {
-  GET_ORDERS,
-  GetOrderItemsByRestaurantIdResponse,
+  GET_ORDERS_BY_RESTAURANT_ID,
+  GET_ORDERS_BY_USER_ID,
 } from "../gql/query/order-items";
 import { selectAuth } from "../features/authSlice";
 
-export const useOrders = () => {
+export const useOrders = (restaurant_id: string, user_id: string) => {
   const auth = useSelector(selectAuth);
   const { token } = auth ?? {};
-  const [getOrders, { loading, error, data, refetch }] =
-    useLazyQuery<GetOrderItemsByRestaurantIdResponse>(GET_ORDERS);
-  const [updateOrderMutation] = useMutation(UPDATE_ORDER);
+
+  const [getOrdersByRestaurant, { refetch: getOrdersByRestaurantRefetch }] =
+    useLazyQuery(GET_ORDERS_BY_RESTAURANT_ID, {
+      variables: { restaurant_id },
+      context: {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+      },
+      fetchPolicy: "network-only", // Optional: Ensures that the latest data is fetched from the server
+    });
+  const [updateOrderMutation] = useMutation(UPDATE_ORDER, {
+    context: {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+    onCompleted: () => {
+      // Refetch the restaurant data after updating
+      getOrdersByUserRefetch();
+    },
+  });
+
+  const [
+    getOrdersByUser,
+    { loading, error, data, refetch: getOrdersByUserRefetch },
+  ] = useLazyQuery(GET_ORDERS_BY_USER_ID, {
+    variables: { user_id },
+    context: {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    },
+    fetchPolicy: "network-only", // Optional: Ensures that the latest data is fetched from the server
+  });
 
   const updateOrder = async (id: string, order_status: string) => {
     try {
@@ -25,7 +57,7 @@ export const useOrders = () => {
           },
         },
       });
-      refetch(); // Refetch the orders after update
+      getOrdersByUserRefetch(); // Refetch the orders after update
       return result;
     } catch (err) {
       console.error("Failed to update order:", err);
@@ -34,10 +66,13 @@ export const useOrders = () => {
   };
 
   return {
-    getOrders,
+    getOrdersByRestaurantRefetch,
+    getOrdersByUserRefetch,
+    getOrdersByUser,
+    getOrdersByRestaurant,
     loading,
     error,
-    orders: data?.get_orders_by_restaurant_id.orders || [],
+    ordersByUser: data?.get_order_by_user_id.orders || [],
     updateOrder,
   };
 };
