@@ -66,6 +66,12 @@ export const GET_ORDERS_BY_USER_ID = gql`
         admin_commission
         delivery_address
         id
+        order_items {
+          id
+          name
+          price
+          quantity
+        }
         order_completed_at
         order_placed_at
         order_status

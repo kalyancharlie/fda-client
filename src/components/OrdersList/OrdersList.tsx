@@ -1,8 +1,18 @@
 import React, { useMemo, useState } from "react";
-import { Table, Button, Modal, Checkbox, Row, Col, Select } from "antd";
+import {
+  Table,
+  Button,
+  Modal,
+  Checkbox,
+  Row,
+  Col,
+  Select,
+  TableColumnsType,
+} from "antd";
 import { EyeInvisibleOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import type { CheckboxValueType } from "antd/es/checkbox/Group";
+import type { TableColumnsType } from "antd";
 
 import { OrderItemResponse } from "../../interfaces/Order.interface";
 import { ORDER_STATUS_LIST } from "../../constants/data";
@@ -13,19 +23,15 @@ export interface IOrdersListProps {
   updateOrder: (id: string, order_status: string) => void;
 }
 
-const OrdersList: React.FC<IOrdersListProps> = ({ orders, updateOrder }) => {
-  const [visibleColumns, setVisibleColumns] = useState<string[]>([
-    "Order ID",
-    "Delivery Address",
-    "Total Amount",
-    "Earnings",
-    "Order Placed At",
-    "Order Status",
-    "Order Status",
-    "Order Completed At",
-  ]);
+interface ExpandedDataType {
+  key: React.Key;
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+}
 
-  const [configVisible, setConfigVisible] = useState(false);
+const OrdersList: React.FC<IOrdersListProps> = ({ orders, updateOrder }) => {
   const columnsOptions = [
     "Order ID",
     "Delivery Address",
@@ -36,6 +42,9 @@ const OrdersList: React.FC<IOrdersListProps> = ({ orders, updateOrder }) => {
     "Order Status",
     "Order Completed At",
   ];
+  const [visibleColumns, setVisibleColumns] =
+    useState<string[]>(columnsOptions);
+  const [configVisible, setConfigVisible] = useState(false);
 
   const handleConfigChange = (checkedValues: CheckboxValueType[]) => {
     setVisibleColumns(checkedValues as string[]);
@@ -49,36 +58,76 @@ const OrdersList: React.FC<IOrdersListProps> = ({ orders, updateOrder }) => {
     setConfigVisible(false);
   };
 
+  const expandColumns: TableColumnsType<ExpandedDataType> = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+    },
+    {
+      title: "Quantity",
+      dataIndex: "quantity",
+      key: "quantity",
+    },
+  ];
+
+  const expandedRowRender = (record: OrderItemResponse) => (
+    <Table<ExpandedDataType>
+      columns={expandColumns}
+      dataSource={record.order_items.map((item) => ({
+        ...item,
+        key: item.id, // Add key for each order item
+      }))}
+      pagination={false}
+    />
+  );
+
   // Table Columns Configuration
   const defaultColumns: ColumnsType<OrderItemResponse> = useMemo(
     () => [
       {
         title: "Order ID",
         dataIndex: "id",
+        key: "id",
       },
       {
         title: "Delivery Address",
         dataIndex: "delivery_address",
+        key: "delivery_address",
         sorter: (a, b) => a.delivery_address.localeCompare(b.delivery_address),
       },
       {
         title: "Total Amount",
         dataIndex: "total_amount",
+        key: "total_amount",
         sorter: (a, b) => a.total_amount.localeCompare(b.total_amount),
       },
       {
         title: "Earnings",
         dataIndex: "vendor_earnings",
+        key: "vendor_earnings",
         sorter: (a, b) => a.vendor_earnings.localeCompare(b.vendor_earnings),
       },
       {
         title: "Order Placed At",
         dataIndex: "order_placed_at",
+        key: "order_placed_at",
         sorter: (a, b) => a.order_placed_at.localeCompare(b.order_placed_at),
       },
       {
         title: "Order Status",
         dataIndex: "order_status",
+        key: "order_status",
         render: (_, record) => (
           <Select
             value={record.order_status}
@@ -97,6 +146,7 @@ const OrdersList: React.FC<IOrdersListProps> = ({ orders, updateOrder }) => {
       {
         title: "Order Completed At",
         dataIndex: "order_completed_at",
+        key: "order_completed_at",
         sorter: (a, b) =>
           a.order_completed_at.localeCompare(b.order_completed_at),
       },
@@ -120,11 +170,13 @@ const OrdersList: React.FC<IOrdersListProps> = ({ orders, updateOrder }) => {
           ></Button>
         </Col>
       </Row>
-      <Table
-        size="small"
+
+      {/* Table */}
+      <Table<OrderItemResponse>
         columns={defaultColumns.filter((col) => {
           return visibleColumns.includes(col.title as string);
         })}
+        expandable={{ expandedRowRender, defaultExpandedRowKeys: ["0"] }}
         dataSource={orders}
         rowKey="id"
       />
