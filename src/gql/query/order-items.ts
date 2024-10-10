@@ -1,7 +1,8 @@
 import { gql } from "@apollo/client";
+
 import { OrderItemResponse } from "../../interfaces/Order.interface";
 
-export interface GetOrderItemsByRestaurantIdResponse {
+export interface GetOrdersByRestaurantIdResponse {
   get_orders_by_restaurant_id: {
     statusCode: number;
     message: string;
@@ -11,12 +12,18 @@ export interface GetOrderItemsByRestaurantIdResponse {
 
 export const GET_ORDERS = gql`
   query MyQuery($restaurant_id: String) {
-    get_orders_by_restaurant_id: {
-      statusCode: number;
-      message: string;
-      orders: OrderItemResponse[];
-    };
-  }`;
+    get_orders_by_restaurant_id(restaurant_id: $restaurant_id) {
+      statusCode
+      message
+      orders {
+        id
+        name
+        price
+        quantity
+      }
+    }
+  }
+`;
 
 export const GET_ORDERS_BY_RESTAURANT_ID = gql`
   query MyQuery($restaurant_id: String) {
@@ -45,8 +52,15 @@ export const GET_ORDERS_BY_RESTAURANT_ID = gql`
   }
 `;
 
+export interface GetOrdersByUserResponse {
+  get_orders_by_user_id: {
+    message: string;
+    orders: OrderItemResponse[];
+  };
+}
+
 export const GET_ORDERS_BY_USER_ID = gql`
-  query MyQuery($user_id: String) {
+  query MyQuery($user_id: String!) {
     get_orders_by_user_id(user_id: $user_id) {
       orders {
         admin_commission
