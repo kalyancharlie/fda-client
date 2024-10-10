@@ -12,9 +12,12 @@ import {
 } from "antd";
 import { EditOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
+import { useNavigate } from "react-router-dom";
 import type { CheckboxValueType } from "antd/es/checkbox/Group";
+
 import { IRestaurant } from "../../interfaces/Restaurant.interface";
 import { DUMMY_IMG_URL } from "../../constants/assets";
+import { getVendorRestaurantPageRoute } from "../../routes/route-constants";
 
 export interface IRestaurantsListProps {
   restaurants: IRestaurant[];
@@ -25,6 +28,8 @@ const RestaurantList: React.FC<IRestaurantsListProps> = ({
   restaurants,
   updateRestaurant,
 }) => {
+  const navigate = useNavigate();
+
   const [visibleColumns, setVisibleColumns] = useState<string[]>([
     "Logo",
     "Name",
@@ -118,16 +123,29 @@ const RestaurantList: React.FC<IRestaurantsListProps> = ({
       {
         title: "Action",
         render: (_, record) => (
-          <Button
-            icon={<EditOutlined />}
-            onClick={() => updateRestaurant(record)}
-          >
-            Edit
-          </Button>
+          <Row gutter={10}>
+            <Col>
+              <Button
+                onClick={() =>
+                  navigate(getVendorRestaurantPageRoute(record.id))
+                }
+              >
+                View Menu Items
+              </Button>
+            </Col>
+            <Col>
+              <Button
+                icon={<EditOutlined />}
+                onClick={() => updateRestaurant(record)}
+              >
+                Edit
+              </Button>
+            </Col>
+          </Row>
         ),
       },
     ],
-    [updateRestaurant]
+    [updateRestaurant, navigate]
   );
 
   return (
