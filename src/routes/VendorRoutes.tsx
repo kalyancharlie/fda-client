@@ -18,7 +18,7 @@ const router: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <Navigate to="home" replace />,
+        element: <Navigate to={ROUTE_VENDOR_RESTAURANTS_ROOT} replace />,
       },
       {
         path: ROUTE_VENDOR_RESTAURANTS_ROOT,

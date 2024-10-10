@@ -6,7 +6,7 @@ import { useLogin } from "../hooks/useLogin";
 import { selectAuth } from "../features/authSlice";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { ROUTE_VENDOR_HOME } from "../routes/route-constants";
+import { ROUTE_ADMIN_HOME, ROUTE_VENDOR_HOME } from "../routes/route-constants";
 
 const CommonLoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const CommonLoginPage: React.FC = () => {
     if (role === "VENDOR") {
       navigate(ROUTE_VENDOR_HOME, { replace: true });
     } else if (role === "ADMIN") {
-      navigate("/admin/home", { replace: true });
+      navigate(ROUTE_ADMIN_HOME, { replace: true });
     }
   }, [role, auth, navigate]);
 

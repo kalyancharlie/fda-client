@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 
 import { logout, selectAuth } from "../../features/authSlice";
-import Navbar from "../Navbar";
 import TokenExpirationWatcher from "../TokenExpiryWatcher";
+import AdminNavbar from "../admin/AdminNavbar";
 
 const AdminLayout: React.FC = () => {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ const AdminLayout: React.FC = () => {
   return (
     <div>
       <TokenExpirationWatcher />
-      <Navbar
+      <AdminNavbar
         moduleName="Admin Panel"
         userName={name || "User"}
         onLogout={() => {
