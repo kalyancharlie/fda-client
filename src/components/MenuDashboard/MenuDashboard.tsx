@@ -10,6 +10,7 @@ import { selectAuth } from "../../features/authSlice";
 import MenuItemList from "../MenuItemList/MenuItemList";
 import { IRestaurant } from "../../interfaces/Restaurant.interface";
 import "./MenuDashboard.css";
+import { useCategory } from "../../hooks/useCategory";
 
 export interface IMenuDashboardProps {
   restaurantId: string;
@@ -30,6 +31,7 @@ const MenuDashboard: React.FC<IMenuDashboardProps> = ({
 
   const { loading, menus, getMenus, updateMenu, createMenu } =
     useMenu(restaurantId);
+    const { getCategories, loading: categoryLoading, categories } =useCategory();
   const [selectedMenu, setSelectedMenu] = useState<MenuItem | null>(null);
   const [isModalVisible, setModalVisible] = useState(false);
 
@@ -46,6 +48,13 @@ const MenuDashboard: React.FC<IMenuDashboardProps> = ({
   useEffect(() => {
     if (restaurantId) {
       getMenus({
+        context: {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        },
+      });
+      getCategories({
         context: {
           headers: {
             Authorization: token ? `Bearer ${token}` : "",
@@ -147,12 +156,13 @@ const MenuDashboard: React.FC<IMenuDashboardProps> = ({
           menu={selectedMenu || undefined}
           onSave={handleSave}
           onCancel={() => setModalVisible(false)}
-          categories={[
-            { id: "1", name: "Appetizers" },
-            { id: "2", name: "Main Course" },
-            { id: "3", name: "Desserts" },
-            { id: "4", name: "Beverages" },
-          ]}
+          // categories={[
+          //   { id: "1", name: "Appetizers" },
+          //   { id: "2", name: "Main Course" },
+          //   { id: "3", name: "Desserts" },
+          //   { id: "4", name: "Beverages" },
+          // ]}
+          categories={categories}
         />
       )}
     </div>

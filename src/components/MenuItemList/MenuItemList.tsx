@@ -1,11 +1,12 @@
 import React, { useMemo, useState } from "react";
-import { Table, Button, Modal, Checkbox, Row, Col } from "antd";
-import { EditOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
+import { Table, Button, Modal, Checkbox, Row, Col, Image } from "antd";
+import { EditOutlined, EyeInvisibleOutlined, CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import type { CheckboxValueType } from "antd/es/checkbox/Group";
 
 import { MenuItemResponse } from "../../gql/query/menu-items";
 import Title from "antd/es/typography/Title";
+import { DUMMY_IMG_URL } from "../../constants/assets";
 
 export interface IMenuItemListProps {
   menuItems: MenuItemResponse[];
@@ -15,12 +16,12 @@ export interface IMenuItemListProps {
 const columnsOptions = [
   "Id",
   "Name",
-  // "Image",
+  "Image",
   "Rating",
   "Category",
   "Price",
   "Qty",
-  "Is Available",
+  "Available",
   "Action",
 ];
 const MenuItemList: React.FC<IMenuItemListProps> = ({
@@ -30,13 +31,6 @@ const MenuItemList: React.FC<IMenuItemListProps> = ({
   const [visibleColumns, setVisibleColumns] =
     useState<string[]>(columnsOptions);
   const [configVisible, setConfigVisible] = useState(false);
-  // const [previewVisible, setPreviewVisible] = useState(false);
-  // const [previewImage, setPreviewImage] = useState("");
-
-  // const handlePreview = (src: string) => {
-  //   setPreviewImage(src);
-  //   setPreviewVisible(true);
-  // };
 
   const handleConfigChange = (checkedValues: CheckboxValueType[]) => {
     setVisibleColumns(checkedValues as string[]);
@@ -64,6 +58,13 @@ const MenuItemList: React.FC<IMenuItemListProps> = ({
         sorter: (a, b) => a.name.localeCompare(b.name),
       },
       {
+        title: "Image",
+        dataIndex: "image_url",
+        render: (text, record) => (
+          <Image width={50}  src={record.image_url || DUMMY_IMG_URL}/>
+        ),
+      },
+      {
         title: "Rating",
         dataIndex: "rating",
         // sorter: (a, b) => a?.rating - b?.rating || 0,
@@ -79,8 +80,16 @@ const MenuItemList: React.FC<IMenuItemListProps> = ({
         sorter: (a, b) => a.quantity - b.quantity,
       },
       {
-        title: "Is Available",
+        title: "Available",
         dataIndex: "is_available",
+        render: (text, record) => (
+          record.is_available ? (
+            <CheckCircleOutlined style={{ color: "#63E6BE", fontSize: "24px" }} /> // Green tick for available
+          ) : (
+            <CloseCircleOutlined style={{ color: "#FF6B6B", fontSize: "24px" }} /> // Red cross for unavailable
+          )
+        )
+        ,
         sorter: (a, b) => a.is_available.localeCompare(b.is_available),
       },
       {
