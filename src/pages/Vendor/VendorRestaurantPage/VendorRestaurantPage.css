@@ -1,0 +1,32 @@
+.restaurant-page-wrapper {
+  display: flex;
+  padding: 1rem;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.restaurant-wrapper {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.restaurant-details p {
+  margin: 0;
+  padding: 0.2rem;
+}
+
+/* .restaurant-image {
+
+} */
+
+.menu-wrapper {
+  justify-content: center;
+  align-items: center;
+}
+
+.menu-item {
+  max-width: 250px;
+}

@@ -1,47 +1,34 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { IAuth } from "../interfaces/Auth.interface";
+import { IAuthWithRole } from "../interfaces/Auth.interface";
+import { setAuth } from "../utils/auth-utils";
 
 interface AuthState {
-  vendorAuth: IAuth | null;
-  adminAuth: IAuth | null;
+  auth: IAuthWithRole | null;
 }
 
 const initialState: AuthState = {
-  vendorAuth: null,
-  adminAuth: null,
+  auth: null,
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    updateVendorAuthState(state, action: PayloadAction<IAuth>) {
-      state.vendorAuth = action.payload;
+    updateAuthState(state, action: PayloadAction<IAuthWithRole>) {
+      setAuth({ ...(action.payload || {}) });
+      state.auth = action.payload;
     },
-    updateAdminAuthState(state, action: PayloadAction<IAuth>) {
-      state.adminAuth = action.payload;
-    },
-    logoutVendor(state) {
-      state.vendorAuth = null;
-    },
-    logoutAdmin(state) {
-      state.adminAuth = null;
+    logout(state) {
+      setAuth(null);
+      state.auth = null;
     },
   },
 });
 
 // Selectors
-export const selectVendorAuth = (state: { auth: AuthState }) =>
-  state.auth.vendorAuth;
-export const selectAdminAuth = (state: { auth: AuthState }) =>
-  state.auth.adminAuth;
+export const selectAuth = (state: { auth: AuthState }) => state.auth.auth;
 
-export const {
-  updateVendorAuthState,
-  updateAdminAuthState,
-  logoutVendor,
-  logoutAdmin,
-} = authSlice.actions;
+export const { updateAuthState, logout } = authSlice.actions;
 
 export default authSlice.reducer;

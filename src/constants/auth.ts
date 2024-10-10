@@ -7,5 +7,4 @@ export const getDefaultAuthState = (): IAuth => ({
   token: "",
   isAuthenticated: false,
 });
-export const LOCAL_STORAGE_ADMIN_AUTH_KEY = "__fda_admin_auth";
-export const LOCAL_STORAGE_VENDOR_AUTH_KEY = "__fda_vendor_auth";
+export const LOCAL_STORAGE_AUTH_KEY = "__fda_common_auth";

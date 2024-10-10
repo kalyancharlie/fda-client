@@ -2,24 +2,26 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
 
-import { logoutVendor, selectVendorAuth } from "../../features/authSlice";
-import Navbar from "../Navbar";
+import { logout, selectAuth } from "../../features/authSlice";
+import TokenExpirationWatcher from "../TokenExpiryWatcher";
+import VendorNavbar from "../vendor/VendorNavbar";
 
 const VendorLayout: React.FC = () => {
   const dispatch = useDispatch();
-  const vendorAuth = useSelector(selectVendorAuth);
+  const vendorAuth = useSelector(selectAuth);
   const { name } = vendorAuth ?? {};
 
   return (
     <div>
-      <Navbar
+      <TokenExpirationWatcher />
+      <VendorNavbar
         moduleName="Vendor Panel"
         userName={name || "User"}
         onLogout={() => {
-          dispatch(logoutVendor());
+          dispatch(logout());
         }}
       />
-      <div style={{ padding: "1rem" }}>
+      <div>
         <Outlet />
       </div>
     </div>

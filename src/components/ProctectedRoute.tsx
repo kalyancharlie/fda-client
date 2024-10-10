@@ -1,4 +1,3 @@
-// components/ProtectedRoute.tsx
 import React from "react";
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -11,11 +10,12 @@ const ProtectedRoute: React.FC<{
   role: IUser["role"];
 }> = ({ children, role }) => {
   const authState = useSelector((state: RootState) => {
-    return role === "VENDOR"
-      ? state.auth.vendorAuth
-      : role === "ADMIN"
-      ? state.auth.adminAuth
-      : { isAuthenticated: false };
+    const auth = state.auth.auth;
+    const { role: userRole, isAuthenticated } = auth ?? {};
+    if (userRole === role) {
+      return { isAuthenticated };
+    }
+    return { isAuthenticated: false };
   });
 
   if (!authState?.isAuthenticated) {

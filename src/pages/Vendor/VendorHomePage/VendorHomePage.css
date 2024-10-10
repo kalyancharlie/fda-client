@@ -1,0 +1,15 @@
+.vendor-home-page-wrapper {
+  padding: 1rem;
+}
+
+.text-button-wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px; /* Adds some spacing between items when wrapping */
+  width: 100%; /* Ensures full width */
+}
+
+.right-button {
+  flex-shrink: 0; /* Prevents the button from shrinking when wrapping */
+}
