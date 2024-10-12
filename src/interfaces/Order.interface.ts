@@ -3,7 +3,7 @@ export interface OrderItemResponse{
     delivery_address:string
     id:string
     order_completed_at:string
-    order_items: OrderItem
+    order_items: [OrderItem]
     order_placed_at:string
     order_status:string
     restaurant_id:string
