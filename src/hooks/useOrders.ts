@@ -8,7 +8,7 @@ import {
   GetOrdersByRestaurantIdResponse,
   GetOrdersByUserResponse,
   GET_ORDERS,
-  GetAllOrdersResponse
+  GetAllOrdersResponse,
 } from "../gql/query/order-items";
 import { selectAuth } from "../features/authSlice";
 
@@ -16,15 +16,15 @@ export const useOrders = (restaurant_id: string, user_id: string) => {
   const auth = useSelector(selectAuth);
   const { token } = auth ?? {};
 
-  const [getOrders, { refetch: getOrdersRefetch }] =
-  useLazyQuery<GetAllOrdersResponse>(GET_ORDERS, {
-    context: {
-      headers: {
-        Authorization: token ? `Bearer ${token}` : "",
+  const [getOrders, { data: allOrders, refetch: getOrdersRefetch }] =
+    useLazyQuery<GetAllOrdersResponse>(GET_ORDERS, {
+      context: {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
+        },
       },
-    },
-    fetchPolicy: "network-only", // Optional: Ensures that the latest data is fetched from the server
-  });
+      fetchPolicy: "network-only", // Optional: Ensures that the latest data is fetched from the server
+    });
 
   const [getOrdersByRestaurant, { refetch: getOrdersByRestaurantRefetch }] =
     useLazyQuery<GetOrdersByRestaurantIdResponse>(GET_ORDERS_BY_RESTAURANT_ID, {
@@ -93,8 +93,9 @@ export const useOrders = (restaurant_id: string, user_id: string) => {
     loading,
     error,
     ordersByUser: data?.get_orders_by_user_id.orders || [],
+    allOrders: allOrders?.get_orders.orders || [],
     updateOrder,
     getOrders,
-    getOrdersRefetch
+    getOrdersRefetch,
   };
 };

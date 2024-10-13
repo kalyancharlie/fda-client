@@ -17,9 +17,9 @@ const AdminOrdersPage: React.FC = () => {
   const {
     loading,
     error,
-    getOrdersByUser,
+    getOrders: getOrdersByUser,
     getOrdersByUserRefetch,
-    ordersByUser,
+    allOrders: ordersByUser,
     updateOrder,
   } = useOrders("", userId as string);
 
