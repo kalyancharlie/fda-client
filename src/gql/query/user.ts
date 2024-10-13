@@ -24,6 +24,14 @@ export interface UserLoginResponse {
   };
 }
 
+export interface GetAllUsersResponse {
+  user_login: {
+    statusCode: number;
+    message: string;
+    user: [IUser];
+  };
+}
+
 export const LOGIN_USER = gql`
   query UserLogin($login_id: String, $otp: String) {
     user_login(login_id: $login_id, otp: $otp) {
@@ -43,3 +51,23 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+export const GET_USERS = gql`
+query MyQuery {
+  get_users {
+    message
+    statusCode
+    users {
+      account_status
+      address
+      email
+      favorites
+      id
+      name
+      phone
+      order_history
+      role
+    }
+  }
+}
+`

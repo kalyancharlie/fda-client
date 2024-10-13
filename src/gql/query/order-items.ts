@@ -10,19 +10,31 @@ export interface GetOrdersByRestaurantIdResponse {
   };
 }
 
+export interface GetAllOrdersResponse {
+  get_orders: {
+    statusCode: number;
+    message: string;
+    orders: OrderItemResponse[];
+  };
+}
+
 export const GET_ORDERS = gql`
-  query MyQuery($restaurant_id: String) {
-    get_orders_by_restaurant_id(restaurant_id: $restaurant_id) {
-      statusCode
-      message
-      orders {
-        id
-        name
-        price
-        quantity
-      }
+  query MyQuery {
+  get_orders {
+    orders {
+      admin_commission
+      delivery_address
+      id
+      order_completed_at
+      order_placed_at
+      order_status
+      restaurant_id
+      total_amount
+      user_id
+      vendor_earnings
     }
   }
+}
 `;
 
 export const GET_ORDERS_BY_RESTAURANT_ID = gql`
