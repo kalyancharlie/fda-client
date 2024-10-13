@@ -10,18 +10,12 @@ import {
 import type { MenuProps } from "antd";
 
 import {
-  ROUTE_ADMIN_MANAGE_ACCOUNTS_PAGE,
   ROUTE_ADMIN_ORDERS_PAGE,
 } from "../../routes/route-constants";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
 const navMenu: MenuItem[] = [
-  {
-    label: "Accounts",
-    key: ROUTE_ADMIN_MANAGE_ACCOUNTS_PAGE,
-    icon: <UserOutlined />,
-  },
   {
     label: "Orders",
     key: ROUTE_ADMIN_ORDERS_PAGE,

@@ -110,19 +110,16 @@ const OrdersList: React.FC<IOrdersListProps> = ({ orders, updateOrder }) => {
         title: "Total Amount",
         dataIndex: "total_amount",
         key: "total_amount",
-        sorter: (a, b) => a.total_amount.localeCompare(b.total_amount),
       },
       {
         title: "Earnings",
         dataIndex: "vendor_earnings",
         key: "vendor_earnings",
-        sorter: (a, b) => a.vendor_earnings.localeCompare(b.vendor_earnings),
       },
       {
         title: "Order Placed At",
         dataIndex: "order_placed_at",
         key: "order_placed_at",
-        sorter: (a, b) => a.order_placed_at.localeCompare(b.order_placed_at),
       },
       {
         title: "Order Status",
