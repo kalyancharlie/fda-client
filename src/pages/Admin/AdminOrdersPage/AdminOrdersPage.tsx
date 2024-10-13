@@ -13,7 +13,6 @@ import "./AdminOrdersPage.css";
 const AdminOrdersPage: React.FC = () => {
   const auth = useSelector(selectAuth);
   const { userId } = auth ?? {};
-  // #TODO Get all orders without user id
   const {
     loading,
     error,

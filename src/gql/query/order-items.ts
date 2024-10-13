@@ -20,21 +20,27 @@ export interface GetAllOrdersResponse {
 
 export const GET_ORDERS = gql`
   query MyQuery {
-  get_orders {
-    orders {
-      admin_commission
-      delivery_address
-      id
-      order_completed_at
-      order_placed_at
-      order_status
-      restaurant_id
-      total_amount
-      user_id
-      vendor_earnings
+    get_orders {
+      orders {
+        admin_commission
+        delivery_address
+        id
+        order_items {
+          id
+          name
+          price
+          quantity
+        }
+        order_completed_at
+        order_placed_at
+        order_status
+        restaurant_id
+        total_amount
+        user_id
+        vendor_earnings
+      }
     }
   }
-}
 `;
 
 export const GET_ORDERS_BY_RESTAURANT_ID = gql`
