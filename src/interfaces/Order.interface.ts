@@ -1,5 +1,5 @@
 export interface OrderItemResponse {
-  admin_commission: string;
+  admin_commission: number;
   delivery_address: string;
   id: string;
   order_completed_at: string;
@@ -7,7 +7,7 @@ export interface OrderItemResponse {
   order_placed_at: string;
   order_status: string;
   restaurant_id: string;
-  total_amount: string;
+  total_amount: number;
   user_id: string;
   vendor_earnings: number;
 }
