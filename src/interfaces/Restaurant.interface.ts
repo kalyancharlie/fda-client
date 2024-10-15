@@ -12,6 +12,8 @@ export interface IRestaurant {
   cuisine_type?: string;
   address?: string;
   description?: string;
+  admin_approval:string;
+  is_available:boolean;
 }
 
 export interface IMenuOrderItem {

@@ -10,7 +10,7 @@ import {
   Row,
   Col,
 } from "antd";
-import { EditOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
+import { EditOutlined, EyeInvisibleOutlined, CloseCircleOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { useNavigate } from "react-router-dom";
 import type { CheckboxValueType } from "antd/es/checkbox/Group";
@@ -22,6 +22,7 @@ import { getVendorRestaurantPageRoute } from "../../routes/route-constants";
 export interface IRestaurantsListProps {
   restaurants: IRestaurant[];
   updateRestaurant: (restaurant: IRestaurant) => void;
+  role: string
 }
 
 const RestaurantList: React.FC<IRestaurantsListProps> = ({
@@ -36,6 +37,8 @@ const RestaurantList: React.FC<IRestaurantsListProps> = ({
     "Image",
     "Rating",
     "Action",
+    "Admin Approval",
+    "Restaurant live"
   ]);
 
 
@@ -106,6 +109,23 @@ const RestaurantList: React.FC<IRestaurantsListProps> = ({
         title: "Rating",
         dataIndex: "rating",
         sorter: (a, b) => a.rating - b.rating,
+      },
+      {
+        title: "Admin Approval",
+        dataIndex: "admin_approval",
+      },
+      {
+        title: "Restaurant live",
+        dataIndex: "is_available",
+        render: (text, record) => (
+          record.is_available ? (
+            <CheckCircleOutlined style={{ color: "#63E6BE", fontSize: "24px" }} /> // Green tick for available
+          ) : (
+            <CloseCircleOutlined style={{ color: "#FF6B6B", fontSize: "24px" }} /> // Red cross for unavailable
+          )
+        )
+        ,
+        // sorter: (a, b) => a.is_available.localeCompare(b.is_available),
       },
       {
         title: "Action",

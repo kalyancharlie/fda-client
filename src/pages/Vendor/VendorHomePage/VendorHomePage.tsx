@@ -27,6 +27,7 @@ const VendorHomePage: React.FC = () => {
     getRestaurants,
     updateRestaurant,
     createRestaurant,
+    refetch
   } = useRestaurants(userId as string);
   const [isUpdateModalOpen, setIsUpdateModalOpen] =
     useState<IRestaurant | null>(null);
@@ -48,6 +49,7 @@ const VendorHomePage: React.FC = () => {
         cuisine_type,
         operating_hours,
         contact_details,
+        image_url
       } = restaurant;
       await createRestaurant({
         variables: {
@@ -62,6 +64,9 @@ const VendorHomePage: React.FC = () => {
             operating_hours,
             contact_details,
             commission_rate: 10,
+            is_available: false,
+            admin_approval: "PENDING",
+            image_url
           },
         },
       });
@@ -82,7 +87,7 @@ const VendorHomePage: React.FC = () => {
   // Update Restaurant
   const updateRestaurantHandler = async (restaurant: IRestaurant) => {
     try {
-      const { id, user_id, name, description, address, rating } = restaurant;
+      const { id, user_id, name, description, address, rating, operating_hours, is_available, image_url } = restaurant;
       await updateRestaurant({
         variables: {
           restaurant: {
@@ -92,6 +97,9 @@ const VendorHomePage: React.FC = () => {
             description,
             address,
             rating,
+            operating_hours,
+            is_available,
+            image_url
           },
         },
       });
@@ -162,8 +170,10 @@ const VendorHomePage: React.FC = () => {
       {isUpdateModalOpen && (
         <RestaurantModal
           visible
-          onSave={(updatedRestaurant) => {
-            return updateRestaurantHandler(updatedRestaurant);
+          onSave={async (updatedRestaurant) => {
+             await updateRestaurantHandler(updatedRestaurant)
+              refetch()
+             return 
           }}
           restaurant={isUpdateModalOpen}
           errorMessage={apiErrorMsg}
