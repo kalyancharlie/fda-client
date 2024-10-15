@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Spin, Typography } from "antd";
-const { Title } = Typography;
+const { Text } = Typography;
 import { useSelector } from "react-redux";
 import { message } from "antd";
 
@@ -21,6 +21,11 @@ const VendorOrdersPage: React.FC = () => {
     ordersByUser,
     updateOrder,
   } = useOrders("", userId as string);
+
+  const vendorEarningsTotal = ordersByUser.reduce(
+    (prev, curr) => prev + curr.vendor_earnings,
+    0
+  );
 
   const [apiErrorMsg, setApiErrorMsg] = useState<string>("");
 
@@ -44,8 +49,14 @@ const VendorOrdersPage: React.FC = () => {
 
   return (
     <div className="page-wrapper">
-      <div className="text-button-wrapper">
-        <Title level={3}>Orders</Title>
+      <div className="text-button-wrapper" style={{ marginBottom: "0.5rem" }}>
+        <Text className="htext-2">Orders</Text>
+        <Text>
+          Total Earnings:{" "}
+          <strong>
+            {loading ? "Loading..." : `₱${vendorEarningsTotal || "0.0"}`}
+          </strong>
+        </Text>
       </div>
       {error && (
         <ApiErrorMessage

@@ -9,7 +9,7 @@ export interface OrderItemResponse {
   restaurant_id: string;
   total_amount: string;
   user_id: string;
-  vendor_earnings: string;
+  vendor_earnings: number;
 }
 
 export interface OrderItem {
