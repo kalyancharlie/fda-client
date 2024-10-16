@@ -2,8 +2,10 @@ import { useLazyQuery, useMutation } from "@apollo/client";
 import { useSelector } from "react-redux";
 
 import {
+  GET_RESTAURANTS,
   GET_RESTAURANTS_BY_USER_ID,
   GetRestaurantResponse,
+  GetAllRestaurantResponse
 } from "../gql/query/restaurant";
 import {
   UPDATE_RESTAURANT,
@@ -26,15 +28,27 @@ export const useRestaurants = (user_id: string) => {
       fetchPolicy: "network-only", // Optional: Ensures that the latest data is fetched from the server
     });
 
+
+    const [getAllRestaurants, { data: getAllRestaurantsData , loading:gaResLoading, error:gaResError, refetch: getAllRestaurantsRefetch }] =
+    useLazyQuery<GetAllRestaurantResponse>(GET_RESTAURANTS, {
+      context: {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+      fetchPolicy: "network-only", // Optional: Ensures that the latest data is fetched from the server
+    });
+
   const [updateRestaurant] = useMutation(UPDATE_RESTAURANT, {
     context: {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     },
-    onCompleted: () => {
+    onCompleted: (args) => {
       // Refetch the restaurant data after updating
-      refetch();
+      console.log(args, 'this is args')
+      // refetch();
     },
   });
 
@@ -58,5 +72,11 @@ export const useRestaurants = (user_id: string) => {
     getRestaurants,
     updateRestaurant,
     createRestaurant,
+    refetch,
+    getAllRestaurantsData:  getAllRestaurantsData ? getAllRestaurantsData.get_restaurants.restaurants : [],
+    gaResLoading,
+    getAllRestaurantsRefetch,
+    getAllRestaurants,
+    gaResError
   };
 };

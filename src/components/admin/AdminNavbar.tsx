@@ -6,11 +6,13 @@ import {
   SettingOutlined,
   UserOutlined,
   TruckOutlined,
+  HomeOutlined
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 
 import {
   ROUTE_ADMIN_ORDERS_PAGE,
+  ROUTE_ADMIN_RESTAURANT_PAGE
 } from "../../routes/route-constants";
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -20,6 +22,11 @@ const navMenu: MenuItem[] = [
     label: "Orders",
     key: ROUTE_ADMIN_ORDERS_PAGE,
     icon: <TruckOutlined />,
+  },
+  {
+    label: "Restaurants",
+    key: ROUTE_ADMIN_RESTAURANT_PAGE,
+    icon: <HomeOutlined /> ,
   },
   {
     label: "",

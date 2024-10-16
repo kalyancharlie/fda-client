@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Form, Input, InputNumber } from "antd";
+import { Modal, Form, Input, InputNumber, Switch } from "antd";
 import TextArea from "antd/es/input/TextArea";
 
 import { IRestaurant } from "../../../interfaces/Restaurant.interface";
@@ -75,7 +75,6 @@ const RestaurantModal: React.FC<RestaurantModalProps> = ({
           rules={[{ required: true }]}
         >
           <TextArea rows={4} placeholder="Enter the description here..." />
-          {/* <Input /> */}
         </Form.Item>
         <Form.Item
           className="input-wrapper"
@@ -99,9 +98,8 @@ const RestaurantModal: React.FC<RestaurantModalProps> = ({
           label="Operating Hours"
           rules={[{ required: true }]}
         >
-          <Input placeholder="e.g. Mon-Fri: 12:00 PM - 10:00 PM" />
+          <Input placeholder="12:00 PM - 10:00 PM" />
         </Form.Item>
-        {/* New address input */}
         <Form.Item
           className="input-wrapper"
           name="address"
@@ -112,17 +110,32 @@ const RestaurantModal: React.FC<RestaurantModalProps> = ({
         >
           <Input />
         </Form.Item>
-        {/* New contact details input */}
+        <Form.Item
+          className="input-wrapper"
+          name="commission_rate"
+          label="Admin Charges"
+        >
+          <InputNumber min={0} style={{ width: "100%" }} placeholder="Value is in %" disabled />
+        </Form.Item>
+        
         <Form.Item
           className="input-wrapper"
           name="contact_details"
           label="Contact Details"
-          rules={[
-            { required: true, message: "Please input the contact details!" },
-          ]}
         >
           <Input />
         </Form.Item>
+        
+        {/* Add the is_available field */}
+        <Form.Item
+          className="input-wrapper"
+          name="is_available"
+          label="Is Available"
+          valuePropName="checked"
+        >
+          <Switch />
+        </Form.Item>
+        
         {/* Add other form fields as needed */}
       </Form>
       {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}{" "}

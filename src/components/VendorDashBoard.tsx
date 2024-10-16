@@ -58,6 +58,8 @@ const VendorDashboard: React.FC = () => {
               description: restaurant.description,
               address: restaurant.address,
               rating: restaurant.rating,
+              operating_hours: restaurant.operating_hours,
+              is_available: restaurant.is_available
             },
           },
         });
@@ -73,10 +75,8 @@ const VendorDashboard: React.FC = () => {
               address: restaurant.address,
               rating: restaurant.rating,
               menu: restaurant.menu,
-              cuisine_type: restaurant.cuisine_type,
               operating_hours: restaurant.operating_hours,
-              contact_details: restaurant.contact_details,
-              commission_rate: 10,
+              admin_approval: "PENDING"
             },
           },
         });

@@ -6,9 +6,11 @@ import {
   ROUTE_ADMIN_MANAGE_ACCOUNTS_PAGE,
   ROUTE_ADMIN_ORDERS_PAGE,
   ROUTE_ADMIN_ORDERS_ROOT,
+  ROUTE_ADMIN_RESTAURANT_PAGE,
 } from "./route-constants";
 import AdminManageAccountsPage from "../pages/Admin/AdminManageAccountsPage/AdminManageAccountsPage";
 import AdminOrdersPage from "../pages/Admin/AdminOrdersPage/AdminOrdersPage";
+import AdminRestaurantPage from "../pages/Admin/AdminRestaurantsPage/AdminRestaurant";
 
 const router: RouteObject[] = [
   {
@@ -40,6 +42,14 @@ const router: RouteObject[] = [
         element: (
           <ProtectedRoute role="ADMIN">
             <AdminOrdersPage />,
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: ROUTE_ADMIN_RESTAURANT_PAGE,
+        element: (
+          <ProtectedRoute role="ADMIN">
+            <AdminRestaurantPage />,
           </ProtectedRoute>
         ),
       },
