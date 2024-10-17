@@ -1,12 +1,23 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
-import 'antd/dist/reset.css';
-import './index.css';
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { ApolloProvider } from "@apollo/client";
+import "antd/dist/reset.css";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react"; // Import PersistGate
+import store, { persistor } from "./store/store.ts"; // Import persistor
 
-createRoot(document.getElementById('root')!).render(
+import "./index.css";
+import client from "./gql/index.ts";
+import App from "./App.tsx";
+
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
-  </StrictMode>,
-)
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <ApolloProvider client={client}>
+          <App />
+        </ApolloProvider>
+      </PersistGate>
+    </Provider>
+  </StrictMode>
+);
