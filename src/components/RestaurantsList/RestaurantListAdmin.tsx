@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState } from 'react'
 import {
   Table,
   Button,
@@ -9,111 +9,127 @@ import {
   Select,
   TableColumnsType,
   InputNumber,
-} from "antd";
-import { EyeInvisibleOutlined } from "@ant-design/icons";
-import type { ColumnsType } from "antd/es/table";
-import type { CheckboxValueType } from "antd/es/checkbox/Group";
-import type { TableColumnsType } from "antd";
+  Spin
+} from 'antd'
+import { EyeInvisibleOutlined } from '@ant-design/icons'
+import type { ColumnsType } from 'antd/es/table'
+import type { CheckboxValueType } from 'antd/es/checkbox/Group'
+import type { TableColumnsType } from 'antd'
 
-import { OrderItemResponse } from "../../interfaces/Order.interface";
-import { ADMIN_STATUS_LIST, ORDER_STATUS_LIST } from "../../constants/data";
-import "./RestaurantsList.css";
-import { IRestaurant } from "../../interfaces/Restaurant.interface";
+import { ADMIN_STATUS_LIST } from '../../constants/data'
+import './RestaurantsList.css'
+import { IRestaurant } from '../../interfaces/Restaurant.interface'
 
 export interface IAdminRestaurantListProps {
-  restaurants: IRestaurant[];
-  updateRestaurantApproval: (id: string, admin_approval: string) => void;
-  updateRestaurantCommisionRate: (id: string, commission_rate: Number) => void;
+  restaurants: IRestaurant[]
+  updateRestaurantApproval: (
+    id: string,
+    admin_approval: string
+  ) => Promise<void>
+  updateRestaurantCommisionRate: (
+    id: string,
+    commission_rate: number
+  ) => Promise<void>
 }
 
-const RestaurantsAdminList: React.FC<IAdminRestaurantListProps> = ({ restaurants, updateRestaurantApproval, updateRestaurantCommisionRate }) => {
+const RestaurantsAdminList: React.FC<IAdminRestaurantListProps> = ({
+  restaurants,
+  updateRestaurantApproval,
+  updateRestaurantCommisionRate
+}) => {
+  const [isUpdating, setIsUpdating] = useState(false)
   const columnsOptions = [
-    "Restaurant Id",
-    "Name",
-    "Image",
-    "Rating",
-    "Admin Approval",
-    "Restaurant live",
-    "Commission Rate"
-  ];
-  const [visibleColumns, setVisibleColumns] =
-    useState<string[]>(columnsOptions);
-  const [configVisible, setConfigVisible] = useState(false);
+    'RestaurantID',
+    'Name',
+    'Rating',
+    'Admin Approval',
+    'Commission Rate'
+  ]
+  const [visibleColumns, setVisibleColumns] = useState<string[]>(columnsOptions)
+  const [configVisible, setConfigVisible] = useState(false)
 
   const handleConfigChange = (checkedValues: CheckboxValueType[]) => {
-    setVisibleColumns(checkedValues as string[]);
-  };
+    setVisibleColumns(checkedValues as string[])
+  }
 
   const handleConfigOk = () => {
-    setConfigVisible(false);
-  };
+    setConfigVisible(false)
+  }
 
   const handleConfigCancel = () => {
-    setConfigVisible(false);
-  };
+    setConfigVisible(false)
+  }
 
   const defaultColumns: ColumnsType<IRestaurant> = useMemo(
     () => [
-        {
-            title: "ID",
-            dataIndex: "id",
-            key: "id",
-          },
-          {
-            title: "Name",
-            dataIndex: "name",
-            key: "name",
-          },
-          {
-            title: "Rating",
-            dataIndex: "rating",
-            key: "Rating",
-          },
       {
-        title: "Admin Approval",
-        dataIndex: "admin_approval",
-        key: "admin_approval",
+        title: 'RestaurantID',
+        dataIndex: 'id',
+        key: 'id'
+      },
+      {
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name'
+      },
+      {
+        title: 'Rating',
+        dataIndex: 'rating',
+        key: 'Rating'
+      },
+      {
+        title: 'Admin Approval',
+        dataIndex: 'admin_approval',
+        key: 'admin_approval',
         render: (_, record) => (
           <Select
             value={record.admin_approval}
             style={{ minWidth: 100 }}
             onChange={(value) => {
-              updateRestaurantApproval(record.id, value);
+              setIsUpdating(true)
+              updateRestaurantApproval(record.id, value).finally(() =>
+                setIsUpdating(false)
+              )
             }}
             options={ADMIN_STATUS_LIST.map((status) => ({
               value: status,
-              label: status,
+              label: status
             }))}
-            // loading={loading}
           />
-        ),
+        )
       },
       {
-        title: "Commission Rate",
-        dataIndex: "commission_rate",
-        key: "commission_rate",
+        title: 'Commission Rate',
+        dataIndex: 'commission_rate',
+        key: 'commission_rate',
         render: (_, record) => (
           <InputNumber
             min={0}
             max={100}
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
             value={record.commission_rate}
-            onChange={(value) => {
-              updateRestaurantCommisionRate(record.id, value as number); // Call update for commission rate
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                setIsUpdating(true)
+                updateRestaurantCommisionRate(
+                  record.id,
+                  Number(event.currentTarget.value)
+                ).finally(() => setIsUpdating(false))
+              }
             }}
           />
-        ),
-      },
+        )
+      }
     ],
     [updateRestaurantApproval, updateRestaurantCommisionRate]
-  );
+  )
 
   return (
     <>
       <Row
         justify="space-between"
         align="middle"
-        style={{ marginBottom: "1rem" }}
+        style={{ marginBottom: '1rem' }}
       >
         <Col> </Col>
         <Col>
@@ -124,11 +140,12 @@ const RestaurantsAdminList: React.FC<IAdminRestaurantListProps> = ({ restaurants
           ></Button>
         </Col>
       </Row>
+      {isUpdating && <Spin fullscreen />}
 
       {/* Table */}
       <Table
         columns={defaultColumns.filter((col) => {
-          return visibleColumns.includes(col.title as string);
+          return visibleColumns.includes(col.title as string)
         })}
         dataSource={restaurants}
         rowKey="id"
@@ -148,7 +165,7 @@ const RestaurantsAdminList: React.FC<IAdminRestaurantListProps> = ({ restaurants
         />
       </Modal>
     </>
-  );
-};
+  )
+}
 
-export default RestaurantsAdminList;
+export default RestaurantsAdminList

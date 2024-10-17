@@ -1,90 +1,90 @@
-import React, { useEffect, useState } from "react";
-import { Spin, Typography } from "antd";
-const { Title } = Typography;
-import { message } from "antd";
-import ApiErrorMessage from "../../../components/ApiErrorMessage";
-import { useRestaurants } from "../../../hooks/useRestaurants";
-import RestaurantsAdminList from "../../../components/RestaurantsList/RestaurantListAdmin";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useEffect, useState } from 'react'
+import { Spin, Typography } from 'antd'
+const { Title } = Typography
+import { message } from 'antd'
+
+import ApiErrorMessage from '../../../components/ApiErrorMessage'
+import { useRestaurants } from '../../../hooks/useRestaurants'
+import RestaurantsAdminList from '../../../components/RestaurantsList/RestaurantListAdmin'
 
 const AdminRestaurantPage: React.FC = () => {
-  // const auth = useSelector(selectAuth);
-  // const {  role } = auth ?? {};
+  const [loading, setLoading] = useState(true)
   const {
-    loading,
-    error,
     getAllRestaurants: getRestaurants,
     getAllRestaurantsData: restaurants,
     updateRestaurant: updateRestaurant,
     getAllRestaurantsRefetch: refetch
-  } = useRestaurants("");
+  } = useRestaurants('')
 
-  const [apiErrorMsg, setApiErrorMsg] = useState<string>("");
+  const [apiErrorMsg, setApiErrorMsg] = useState<string>('')
 
   // Update Restaurant - Admin Approval and Commission Rate
-  const updateAdminRestaurantHandler = async (id: string, admin_approval: string) => {
+  const updateAdminRestaurantHandler = async (
+    id: string,
+    admin_approval: string
+  ) => {
     try {
       const res = await updateRestaurant({
         variables: {
           restaurant: {
             id: id,
-            admin_approval: admin_approval,
-          },
-        },
-      });
-      console.log(res);
-      message.success("Restaurant Admin Approval Updated Successfully!");
-      refetch();
+            admin_approval: admin_approval
+          }
+        }
+      })
+      console.log(res)
+      message.success('Restaurant Admin Approval Updated Successfully!')
+      refetch()
     } catch (error) {
-      setApiErrorMsg(`Failed to update admin approval for restaurant - ${id}`);
-      message.error(`Failed to update admin approval for restaurant - ${id}`);
+      setApiErrorMsg(`Failed to update admin approval for restaurant - ${id}`)
+      message.error(`Failed to update admin approval for restaurant - ${id}`)
     }
-  };
+  }
 
   // Update Restaurant - Commission Rate
-  const updateRestaurantCommisionRateHandler = async (id: string, commission_rate: Number) => {
+  const updateRestaurantCommisionRateHandler = async (
+    id: string,
+    commission_rate: number
+  ) => {
     try {
       const res = await updateRestaurant({
         variables: {
           restaurant: {
             id: id,
-            commission_rate: commission_rate,
-          },
-        },
-      });
-      console.log(res);
-      message.success("Restaurant Commission Rate Updated Successfully!");
-      refetch();
+            commission_rate: commission_rate
+          }
+        }
+      })
+      console.log(res)
+      message.success('Restaurant Commission Rate Updated Successfully!')
+      refetch()
     } catch (error) {
-      setApiErrorMsg(`Failed to update commission rate for restaurant - ${id}`);
-      message.error(`Failed to update commission rate for restaurant - ${id}`);
+      setApiErrorMsg(`Failed to update commission rate for restaurant - ${id}`)
+      message.error(`Failed to update commission rate for restaurant - ${id}`)
     }
-  };
-
+  }
 
   useEffect(() => {
-    getRestaurants();
-  }, [getRestaurants]);
+    getRestaurants().finally(() => setLoading(false))
+  }, [getRestaurants])
 
   return (
     <div className="page-wrapper">
       <div className="text-button-wrapper">
         <Title level={3}>Restaurants</Title>
       </div>
-      {error && (
-        <ApiErrorMessage
-          message={
-            error.cause?.message ||
-            error?.cause?.name ||
-            "Error in Fetching Orders"
-          }
-        />
-      )}
+      {apiErrorMsg && <ApiErrorMessage message={apiErrorMsg || 'Error'} />}
       {loading && <Spin fullscreen />}
 
       {/* Orders List */}
-      <RestaurantsAdminList restaurants={restaurants} updateRestaurantApproval={updateAdminRestaurantHandler} updateRestaurantCommisionRate={updateRestaurantCommisionRateHandler}/>
+      <RestaurantsAdminList
+        restaurants={restaurants}
+        updateRestaurantApproval={updateAdminRestaurantHandler}
+        updateRestaurantCommisionRate={updateRestaurantCommisionRateHandler}
+      />
     </div>
-  );
-};
+  )
+}
 
-export default AdminRestaurantPage;
+export default AdminRestaurantPage
