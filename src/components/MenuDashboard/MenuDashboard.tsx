@@ -78,7 +78,8 @@ const MenuDashboard: React.FC<IMenuDashboardProps> = ({
           category: menu.category,
           is_available: menu.is_available,
           image_url: menu.image_url,
-          rating: menu.rating // Optional field
+          rating: menu.rating, // Optional field
+          quantity: menu.quantity
         }
 
         // Remove undefined fields
