@@ -1,21 +1,29 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client'
 
-import { OrderItemResponse } from "../../interfaces/Order.interface";
+import { OrderItemResponse } from '../../interfaces/Order.interface'
 
 export interface GetOrdersByRestaurantIdResponse {
   get_orders_by_restaurant_id: {
-    statusCode: number;
-    message: string;
-    orders: OrderItemResponse[];
-  };
+    statusCode: number
+    message: string
+    orders: OrderItemResponse[]
+  }
+}
+
+export interface GetOrdersByRestaurantIdsResponse {
+  get_orders_by_restaurant_ids: {
+    statusCode: number
+    message: string
+    orders: OrderItemResponse[]
+  }
 }
 
 export interface GetAllOrdersResponse {
   get_orders: {
-    statusCode: number;
-    message: string;
-    orders: OrderItemResponse[];
-  };
+    statusCode: number
+    message: string
+    orders: OrderItemResponse[]
+  }
 }
 
 export const GET_ORDERS = gql`
@@ -41,7 +49,7 @@ export const GET_ORDERS = gql`
       }
     }
   }
-`;
+`
 
 export const GET_ORDERS_BY_RESTAURANT_ID = gql`
   query MyQuery($restaurant_id: String) {
@@ -68,13 +76,40 @@ export const GET_ORDERS_BY_RESTAURANT_ID = gql`
       statusCode
     }
   }
-`;
+`
+
+export const GET_ORDERS_BY_RESTAURANT_IDS = gql`
+  query MyQuery($ids: [String!]) {
+    get_orders_by_restaurant_ids(ids: $ids) {
+      message
+      orders {
+        admin_commission
+        delivery_address
+        id
+        order_completed_at
+        order_items {
+          id
+          name
+          price
+          quantity
+        }
+        order_placed_at
+        order_status
+        restaurant_id
+        total_amount
+        user_id
+        vendor_earnings
+      }
+      statusCode
+    }
+  }
+`
 
 export interface GetOrdersByUserResponse {
   get_orders_by_user_id: {
-    message: string;
-    orders: OrderItemResponse[];
-  };
+    message: string
+    orders: OrderItemResponse[]
+  }
 }
 
 export const GET_ORDERS_BY_USER_ID = gql`
@@ -101,4 +136,4 @@ export const GET_ORDERS_BY_USER_ID = gql`
       message
     }
   }
-`;
+`
