@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react'
 import { Button, notification, Spin, Select } from 'antd'
 import { useSelector } from 'react-redux'
@@ -33,7 +34,7 @@ const MenuDashboard: React.FC<IMenuDashboardProps> = ({
     useMenu(restaurantId)
   const currentRestaurant =
     restaurants.find((rest) => rest.id === restaurantId) || null
-  const { getCategories, loading: categoryLoading, categories } = useCategory()
+  const { getCategories, categories } = useCategory()
   const [selectedMenu, setSelectedMenu] = useState<MenuItem | null>(null)
   const [isModalVisible, setModalVisible] = useState(false)
 
@@ -68,7 +69,6 @@ const MenuDashboard: React.FC<IMenuDashboardProps> = ({
 
   const handleSave = async (menu: MenuItem) => {
     try {
-      let result
       if (selectedMenu) {
         const updatedMenuItem = {
           id: menu.id, // Ensure you include the id for the update
@@ -84,7 +84,7 @@ const MenuDashboard: React.FC<IMenuDashboardProps> = ({
 
         // Remove undefined fields
         const filteredMenuItem = removeUndefinedFields(updatedMenuItem)
-        result = await updateMenu({
+        await updateMenu({
           variables: { menu_item: filteredMenuItem }
         })
         onEdit()
@@ -95,7 +95,7 @@ const MenuDashboard: React.FC<IMenuDashboardProps> = ({
           restaurant_name: currentRestaurant?.name || 'RestaurantName'
         }
         console.log(newMenuData)
-        result = await createMenu({ variables: { menu_items: newMenuData } })
+        await createMenu({ variables: { menu_items: newMenuData } })
         onCreate()
       }
 
@@ -109,7 +109,7 @@ const MenuDashboard: React.FC<IMenuDashboardProps> = ({
 
       // Close the modal only after successful operation
       setModalVisible(false)
-    } catch (err) {
+    } catch (err: any) {
       // Show error notification
       notification.error({
         message: 'Error',

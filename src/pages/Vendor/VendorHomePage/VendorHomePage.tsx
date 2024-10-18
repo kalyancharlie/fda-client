@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { Button, Spin, Typography } from "antd";
-const { Title } = Typography;
-import { useSelector } from "react-redux";
-import { message } from "antd";
+import React, { useEffect, useState } from 'react'
+import { Button, Spin, Typography } from 'antd'
+const { Title } = Typography
+import { useSelector } from 'react-redux'
+import { message } from 'antd'
 
-import RestaurantsList from "../../../components/RestaurantsList/RestaurantsList";
-import { IRestaurant } from "../../../interfaces/Restaurant.interface";
-import { useRestaurants } from "../../../hooks/useRestaurants";
-import { selectAuth } from "../../../features/authSlice";
-import RestaurantModal from "../../../components/modals/RestaurantModal/RestaurantModel";
-import ApiErrorMessage from "../../../components/ApiErrorMessage";
-import "./VendorHomePage.css";
+import RestaurantsList from '../../../components/RestaurantsList/RestaurantsList'
+import { IRestaurant } from '../../../interfaces/Restaurant.interface'
+import { useRestaurants } from '../../../hooks/useRestaurants'
+import { selectAuth } from '../../../features/authSlice'
+import RestaurantModal from '../../../components/modals/RestaurantModal/RestaurantModel'
+import ApiErrorMessage from '../../../components/ApiErrorMessage'
+import './VendorHomePage.css'
 
 export type UpdateRestaurantFuncType = (params: {
-  restaurantId: string;
-  updateProps: Partial<IRestaurant>;
-}) => void;
+  restaurantId: string
+  updateProps: Partial<IRestaurant>
+}) => void
 
 const VendorHomePage: React.FC = () => {
-  const auth = useSelector(selectAuth);
-  const { userId } = auth ?? {};
+  const auth = useSelector(selectAuth)
+  const { userId } = auth ?? {}
   const {
     loading,
     error,
@@ -28,16 +28,16 @@ const VendorHomePage: React.FC = () => {
     updateRestaurant,
     createRestaurant,
     refetch
-  } = useRestaurants(userId as string);
+  } = useRestaurants(userId as string)
   const [isUpdateModalOpen, setIsUpdateModalOpen] =
-    useState<IRestaurant | null>(null);
+    useState<IRestaurant | null>(null)
 
-  const [apiErrorMsg, setApiErrorMsg] = useState<string>("");
+  const [apiErrorMsg, setApiErrorMsg] = useState<string>('')
   // Create Restaurant
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const displayCreateModal = () => {
-    setIsAddModalOpen(true);
-  };
+    setIsAddModalOpen(true)
+  }
   const createRestaurantHandler = async (restaurant: IRestaurant) => {
     try {
       const {
@@ -50,7 +50,7 @@ const VendorHomePage: React.FC = () => {
         operating_hours,
         contact_details,
         image_url
-      } = restaurant;
+      } = restaurant
       await createRestaurant({
         variables: {
           restaurants: {
@@ -65,29 +65,39 @@ const VendorHomePage: React.FC = () => {
             contact_details,
             commission_rate: 10,
             is_available: false,
-            admin_approval: "PENDING",
+            admin_approval: 'PENDING',
             image_url
-          },
-        },
-      });
-      message.success("Restaurant Created Successfully!");
-      setIsAddModalOpen(false);
-      getRestaurants();
+          }
+        }
+      })
+      message.success('Restaurant Created Successfully!')
+      setIsAddModalOpen(false)
+      getRestaurants()
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      setApiErrorMsg("Failed");
-      message.error("Failed to Create");
+      setApiErrorMsg('Failed')
+      message.error('Failed to Create')
     }
-  };
+  }
   const onCreateCancel = () => {
-    setApiErrorMsg("");
-    setIsAddModalOpen(false);
-  };
+    setApiErrorMsg('')
+    setIsAddModalOpen(false)
+  }
 
   // Update Restaurant
   const updateRestaurantHandler = async (restaurant: IRestaurant) => {
     try {
-      const { id, user_id, name, description, address, rating, operating_hours, is_available, image_url } = restaurant;
+      const {
+        id,
+        user_id,
+        name,
+        description,
+        address,
+        rating,
+        operating_hours,
+        is_available,
+        image_url
+      } = restaurant
       await updateRestaurant({
         variables: {
           restaurant: {
@@ -100,30 +110,30 @@ const VendorHomePage: React.FC = () => {
             operating_hours,
             is_available,
             image_url
-          },
-        },
-      });
-      message.success("Restaurant Update Success!");
-      setIsUpdateModalOpen(null);
+          }
+        }
+      })
+      message.success('Restaurant Update Success!')
+      setIsUpdateModalOpen(null)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      setApiErrorMsg("Failed");
-      message.error("Failed to Update");
+      setApiErrorMsg('Failed')
+      message.error('Failed to Update')
     }
-  };
+  }
 
   const displayUpdateModal = (restaurant: IRestaurant) => {
-    setIsUpdateModalOpen(restaurant);
-  };
+    setIsUpdateModalOpen(restaurant)
+  }
 
   const onUpdateCancel = () => {
-    setApiErrorMsg("");
-    setIsUpdateModalOpen(null);
-  };
+    setApiErrorMsg('')
+    setIsUpdateModalOpen(null)
+  }
 
   useEffect(() => {
-    getRestaurants();
-  }, [getRestaurants]);
+    getRestaurants()
+  }, [getRestaurants])
 
   return (
     <div className="page-wrapper vendor-home-page-wrapper">
@@ -142,7 +152,7 @@ const VendorHomePage: React.FC = () => {
           message={
             error.cause?.message ||
             error?.cause?.name ||
-            "Error in Fetching Restaurants"
+            'Error in Fetching Restaurants'
           }
         />
       )}
@@ -152,6 +162,7 @@ const VendorHomePage: React.FC = () => {
       <RestaurantsList
         restaurants={restaurants}
         updateRestaurant={displayUpdateModal}
+        role=""
       />
 
       {/* Add Restaurant Modal */}
@@ -159,7 +170,7 @@ const VendorHomePage: React.FC = () => {
         <RestaurantModal
           visible
           onSave={(newRestaurant) => {
-            return createRestaurantHandler(newRestaurant);
+            return createRestaurantHandler(newRestaurant)
           }}
           errorMessage={apiErrorMsg}
           onCancel={onCreateCancel}
@@ -171,9 +182,9 @@ const VendorHomePage: React.FC = () => {
         <RestaurantModal
           visible
           onSave={async (updatedRestaurant) => {
-             await updateRestaurantHandler(updatedRestaurant)
-              refetch()
-             return 
+            await updateRestaurantHandler(updatedRestaurant)
+            refetch()
+            return
           }}
           restaurant={isUpdateModalOpen}
           errorMessage={apiErrorMsg}
@@ -181,7 +192,7 @@ const VendorHomePage: React.FC = () => {
         />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default VendorHomePage;
+export default VendorHomePage

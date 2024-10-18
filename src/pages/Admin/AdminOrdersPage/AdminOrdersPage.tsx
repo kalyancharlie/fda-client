@@ -1,58 +1,58 @@
-import React, { useEffect, useState } from "react";
-import { Spin, Typography } from "antd";
-const { Text } = Typography;
-import { useSelector } from "react-redux";
-import { message } from "antd";
+import React, { useEffect, useState } from 'react'
+import { Spin, Typography } from 'antd'
+const { Text } = Typography
+import { useSelector } from 'react-redux'
+import { message } from 'antd'
 
-import { selectAuth } from "../../../features/authSlice";
-import ApiErrorMessage from "../../../components/ApiErrorMessage";
-import { useOrders } from "../../../hooks/useOrders";
-import OrdersList from "../../../components/OrdersList/OrdersList";
-import "./AdminOrdersPage.css";
+import { selectAuth } from '../../../features/authSlice'
+import ApiErrorMessage from '../../../components/ApiErrorMessage'
+import { useOrders } from '../../../hooks/useOrders'
+import OrdersList from '../../../components/OrdersList/OrdersList'
+import './AdminOrdersPage.css'
 
 const AdminOrdersPage: React.FC = () => {
-  const auth = useSelector(selectAuth);
-  const { userId } = auth ?? {};
-  const [isLoading, setIsLoading] = useState(true);
+  const auth = useSelector(selectAuth)
+  const { userId } = auth ?? {}
+  const [isLoading, setIsLoading] = useState(true)
   const { error, getOrders, getOrdersRefetch, allOrders, updateOrder } =
-    useOrders("", userId as string);
+    useOrders('', userId as string)
 
   const adminEarningsTotal = allOrders.reduce(
     (prev, curr) => prev + curr.admin_commission,
     0
-  );
+  )
 
-  const [apiErrorMsg, setApiErrorMsg] = useState<string>("");
+  const [apiErrorMsg, setApiErrorMsg] = useState<string>('')
 
   // Update Order - only Status field
   const updateOrderHandler = async (orderId: string, orderStatus: string) => {
     try {
-      setIsLoading(true);
-      const res = await updateOrder(orderId, orderStatus);
-      console.log(res);
-      message.success("Order Update Success!");
-      await getOrdersRefetch();
-      setIsLoading(false);
+      setIsLoading(true)
+      const res = await updateOrder(orderId, orderStatus)
+      console.log(res)
+      message.success('Order Update Success!')
+      await getOrdersRefetch()
+      setIsLoading(false)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      setApiErrorMsg(`Failed to update order - ${orderId}`);
-      message.error(`Failed to update order - ${orderId}`);
-      setIsLoading(false);
+      setApiErrorMsg(`Failed to update order - ${orderId}`)
+      message.error(`Failed to update order - ${orderId}`)
+      setIsLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    getOrders().finally(() => setIsLoading(false));
-  }, [getOrders]);
+    getOrders().finally(() => setIsLoading(false))
+  }, [getOrders])
 
   return (
     <div className="page-wrapper">
-      <div className="text-button-wrapper" style={{ marginBottom: "0.5rem" }}>
+      <div className="text-button-wrapper" style={{ marginBottom: '0.5rem' }}>
         <Text className="htext-2">Orders</Text>
         <Text>
-          Total Earnings:{" "}
+          Total Earnings:{' '}
           <strong>
-            {isLoading ? "Loading..." : `₱${adminEarningsTotal || "0.0"}`}
+            {isLoading ? 'Loading...' : `₱${adminEarningsTotal || '0.0'}`}
           </strong>
         </Text>
       </div>
@@ -60,8 +60,9 @@ const AdminOrdersPage: React.FC = () => {
         <ApiErrorMessage
           message={
             error.cause?.message ||
+            apiErrorMsg ||
             error?.cause?.name ||
-            "Error in Fetching Orders"
+            'Error in Fetching Orders'
           }
         />
       )}
@@ -70,7 +71,7 @@ const AdminOrdersPage: React.FC = () => {
       {/* Orders List */}
       <OrdersList orders={allOrders} updateOrder={updateOrderHandler} />
     </div>
-  );
-};
+  )
+}
 
-export default AdminOrdersPage;
+export default AdminOrdersPage

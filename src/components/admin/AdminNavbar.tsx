@@ -1,93 +1,88 @@
-import React, { useEffect, useState } from "react";
-import { Layout, Menu, Typography, Row, Col } from "antd";
-import { LogoutOutlined } from "@ant-design/icons";
-import { useLocation, useNavigate } from "react-router-dom";
-import {
-  SettingOutlined,
-  UserOutlined,
-  TruckOutlined,
-  HomeOutlined
-} from "@ant-design/icons";
-import type { MenuProps } from "antd";
+import React, { useEffect, useState } from 'react'
+import { Layout, Menu, Typography, Row, Col } from 'antd'
+import { LogoutOutlined } from '@ant-design/icons'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { SettingOutlined, TruckOutlined, HomeOutlined } from '@ant-design/icons'
+import type { MenuProps } from 'antd'
 
 import {
   ROUTE_ADMIN_ORDERS_PAGE,
   ROUTE_ADMIN_RESTAURANT_PAGE
-} from "../../routes/route-constants";
+} from '../../routes/route-constants'
 
-type MenuItem = Required<MenuProps>["items"][number];
+type MenuItem = Required<MenuProps>['items'][number]
 
 const navMenu: MenuItem[] = [
   {
-    label: "Orders",
+    label: 'Orders',
     key: ROUTE_ADMIN_ORDERS_PAGE,
-    icon: <TruckOutlined />,
+    icon: <TruckOutlined />
   },
   {
-    label: "Restaurants",
+    label: 'Restaurants',
     key: ROUTE_ADMIN_RESTAURANT_PAGE,
-    icon: <HomeOutlined /> ,
+    icon: <HomeOutlined />
   },
   {
-    label: "",
-    key: "SubMenu",
+    label: '',
+    key: 'SubMenu',
     icon: <SettingOutlined />,
     children: [
       {
-        type: "item",
-        key: "logout",
-        label: "Logout",
-        icon: <LogoutOutlined />,
-      },
-    ],
-  },
-];
+        type: 'item',
+        key: 'logout',
+        label: 'Logout',
+        icon: <LogoutOutlined />
+      }
+    ]
+  }
+]
 
-const { Header } = Layout;
-const { Text } = Typography;
+const { Header } = Layout
+const { Text } = Typography
 
 export interface INavbarProps {
-  moduleName?: string;
-  userName: string;
-  onLogout: () => void;
+  moduleName?: string
+  userName: string
+  onLogout: () => void
 }
 const AdminNavbar: React.FC<INavbarProps> = ({
   moduleName,
   userName,
-  onLogout,
+  onLogout
 }) => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [current, setCurrent] = useState(ROUTE_ADMIN_ORDERS_PAGE);
+  const location = useLocation()
+  const navigate = useNavigate()
+  const [current, setCurrent] = useState(ROUTE_ADMIN_ORDERS_PAGE)
 
-  const onClick: MenuProps["onClick"] = (e) => {
-    if (e.key === "logout") {
-      onLogout();
-      return;
+  const onClick: MenuProps['onClick'] = (e) => {
+    if (e.key === 'logout') {
+      onLogout()
+      return
     }
-    navigate(e.key);
-  };
+    navigate(e.key)
+  }
 
   useEffect(() => {
     switch (location.pathname) {
       default:
-        setCurrent(location.pathname);
+        setCurrent(location.pathname)
     }
-  }, [location]);
+  }, [location])
 
   return (
     <Header
       style={{
-        backgroundColor: "#fff",
-        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "space-between",
-        alignItems: "center",
+        backgroundColor: '#fff',
+        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        alignItems: 'center'
       }}
     >
       {moduleName && (
-        <Text strong style={{ fontSize: "18px" }}>
+        <Text strong style={{ fontSize: '18px' }}>
           {moduleName}
         </Text>
       )}
@@ -96,7 +91,7 @@ const AdminNavbar: React.FC<INavbarProps> = ({
         justify="space-between"
         align="middle"
         gutter={[16, 0]}
-        style={{ gap: "1rem" }}
+        style={{ gap: '1rem' }}
       >
         <Col>
           <Text>
@@ -114,7 +109,7 @@ const AdminNavbar: React.FC<INavbarProps> = ({
         </Col>
       </Row>
     </Header>
-  );
-};
+  )
+}
 
-export default AdminNavbar;
+export default AdminNavbar

@@ -7,14 +7,11 @@ import {
   Row,
   Col,
   Select,
-  TableColumnsType,
   InputNumber,
   Spin
 } from 'antd'
 import { EyeInvisibleOutlined } from '@ant-design/icons'
 import type { ColumnsType } from 'antd/es/table'
-import type { CheckboxValueType } from 'antd/es/checkbox/Group'
-import type { TableColumnsType } from 'antd'
 
 import { ADMIN_STATUS_LIST } from '../../constants/data'
 import './RestaurantsList.css'
@@ -48,7 +45,7 @@ const RestaurantsAdminList: React.FC<IAdminRestaurantListProps> = ({
   const [visibleColumns, setVisibleColumns] = useState<string[]>(columnsOptions)
   const [configVisible, setConfigVisible] = useState(false)
 
-  const handleConfigChange = (checkedValues: CheckboxValueType[]) => {
+  const handleConfigChange = (checkedValues: string[]) => {
     setVisibleColumns(checkedValues as string[])
   }
 
